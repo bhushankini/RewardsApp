@@ -2,6 +2,7 @@ package com.bpk.rewards;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,6 +16,7 @@ public class MyRewardsApplication extends Application {
         super.onCreate();
         FirebaseApp.initializeApp(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FacebookSdk.sdkInitialize(this);
 
     }
 }

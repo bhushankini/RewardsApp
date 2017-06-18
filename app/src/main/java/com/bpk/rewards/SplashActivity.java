@@ -44,32 +44,19 @@ public class SplashActivity extends Activity implements ServerTimeAsyncResponse 
     private void gotoMain(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!= null ){
-            Log.d("tag","Login getDisplayName  "+currentUser.getDisplayName());
-            Log.d("tag","Login getEmail  "+currentUser.getEmail());
-            Log.d("tag","Login getPhotoUrl  "+currentUser.getPhotoUrl());
-            Log.d("tag","Login getUid  "+currentUser.getUid());
 
             startActivity(new Intent(this, MainActivity.class));
         }
         else {
-          //  startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
         finish();
     }
 
     @Override
     public void processFinish(String result) {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!= null ){
-            Log.d("tag","Login Server Time  "+result);
-            Log.d("tag","Login getDisplayName  "+currentUser.getDisplayName());
-            Log.d("tag","Login getEmail  "+currentUser.getEmail());
-            Log.d("tag","Login getPhotoUrl  "+currentUser.getPhotoUrl());
-            Log.d("tag","Login getUid  "+currentUser.getUid());
             gotoMain();
-            //  startActivity(new Intent(this, MainActivity.class));
-        }
-    }
+     }
 }
 
 

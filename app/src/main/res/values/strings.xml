@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">RewardsApp</string>
+    <string name="app_name">My Rewards</string>
+    <string name="btnNewGame">New Game</string>
+    <string name="btnNewGameCPU">New Game vs CPU</string>
+    <string name="btnEasy">Easy</string>
+    <string name="btnNormal">Normal</string>
+    <string name="btnHard">Hard</string>
+    <string name="btnImpossible">Impossible</string>
+    <string name="title">Tic Tac Toe</string>
+    <string name="difficulty">Select Difficulty</string>
+    <string name="txtPlayer">Player:</string>
+    <string name="txtCPU">CPU:</string>
+    <string name="watchVideo">Watch Video</string>
+
+    <string name="facebook_app_id">1334545699916025</string>
+    <string name="fb_login_protocol_scheme">fb1334545699916025</string>
+
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="firebase_url">https://myrewards-d26da.firebaseio.com/</string>
+    <string name="loading">Loading..</string>
+    <string name="facebook_status_fmt">Facebook User: %s</string>
+    <string name="facebook_title_text">Facebook Login</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+
 </resources>
