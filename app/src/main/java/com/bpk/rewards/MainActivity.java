@@ -9,6 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.bpk.rewards.fragments.AccountFragment;
+import com.bpk.rewards.fragments.HistoryFragment;
+import com.bpk.rewards.fragments.LeaderBoardFragment;
+import com.bpk.rewards.fragments.RewardsFragment;
 import com.bpk.rewards.fragments.VideoFragment;
 
 import java.util.ArrayList;
@@ -41,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new VideoFragment(), "Home");
-        adapter.addFrag(new VideoFragment(), "History");
-        adapter.addFrag(new VideoFragment(), "Rewards");
-        adapter.addFrag(new VideoFragment(), "Leaderboard");
-        adapter.addFrag(new VideoFragment(), "Account");
+        adapter.addFrag(new HistoryFragment(), "History");
+        adapter.addFrag(new RewardsFragment(), "Rewards");
+        adapter.addFrag(new LeaderBoardFragment(), "Leaderboard");
+        adapter.addFrag(new AccountFragment(), "Account");
       //  adapter.addFrag(new VideoFragment(), "SIX");
 
         viewPager.setAdapter(adapter);
