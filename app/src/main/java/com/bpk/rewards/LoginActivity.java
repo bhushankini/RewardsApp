@@ -204,8 +204,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void updateUI(FirebaseUser user) {
 
-        if(user!=null && user.isEmailVerified()) {
-
+        if(user!=null) {
             hideProgressDialog();
             if (user != null) {
                 Log.d(TAG, "Login Success " + user.getDisplayName());

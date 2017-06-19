@@ -28,10 +28,7 @@
     <string name="watch_earn">Watch video to earn 2 coins</string>
     <string name="watch"> Watch</string>
     <string name="claim"> Claim</string>
-    <string name="claim_daily_reward">Click and claim your daily reward</string>
-
-
-
+    <string name="claim_daily_reward">Claim your daily reward 15 points</string>
 
 
 </resources>
