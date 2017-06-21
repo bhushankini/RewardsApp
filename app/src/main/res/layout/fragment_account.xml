@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="#E5E7E9">
 
-
-<TextView
+<Button
+    android:id="@+id/btnLogout"
+    android:text="@string/sign_out"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="Account"/>
+    android:layout_height="wrap_content" />
 </RelativeLayout>

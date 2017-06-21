@@ -2,7 +2,6 @@ package com.bpk.rewards.adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     public HistoryAdapter(ArrayList<UserTransaction> data) {
-        Log.d("TAG", "Jyoti HistoryAdapter inside " + data.size());
-
         this.dataSet = data;
     }
 
@@ -44,7 +41,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                                                 int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_history, parent, false);
-        Log.d("TAG", "Jyoti onCreateViewHolder inside ");
 
         HistoryViewHolder myViewHolder = new HistoryViewHolder(view);
         return myViewHolder;
@@ -52,7 +48,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(final HistoryViewHolder holder, final int listPosition) {
-        Log.d("TAG", "Jyoti onBindViewHolder " + listPosition);
         TextView txtSource = holder.txtSource;
         TextView txtPoints = holder.txtPoints;
         TextView txtTime = holder.txtTime;
@@ -73,7 +68,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public int getItemCount() {
-        Log.d("TAG", "SAMP getItemCount " + dataSet.size());
         return dataSet.size();
     }
 
