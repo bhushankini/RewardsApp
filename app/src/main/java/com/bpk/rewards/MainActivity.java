@@ -1,12 +1,12 @@
 package com.bpk.rewards;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-       //   getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //   getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         txtPoints = (TextView) findViewById(R.id.toolbar_points);
-      //  txtPoints.setText("100 points");
+        //  txtPoints.setText("100 points");
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseUserDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
         addPointsChangeListener();
@@ -71,6 +71,31 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(new LeaderBoardFragment(), "Leaderboard");
         adapter.addFrag(new AccountFragment(), "Account");
         viewPager.setAdapter(adapter);
+    }
+
+    private void addPointsChangeListener() {
+        // User data change listener
+        mFirebaseUserDatabase.child(Utils.getUserId(MainActivity.this)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                // Check for null
+
+                if (user == null) {
+                    return;
+                }
+                PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_ID, user.getUserId());
+                txtPoints.setText(" " + user.getPoints() + "  ");
+                Log.e("KHUSHI", "KHUSHI last open " + user.getLastopen());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e("KHUSHI", "Failed to read user", error.toException());
+            }
+        });
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -100,31 +125,5 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-    }
-
-
-
-    private void addPointsChangeListener() {
-        // User data change listener
-        mFirebaseUserDatabase.child(Utils.getUserId(MainActivity.this)).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-               User user = dataSnapshot.getValue(User.class);
-
-                // Check for null
-                if (user == null) {
-                    return;
-                }
-                PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_ID, user.getUserId());
-                txtPoints.setText(" "+user.getPoints() + "  ");
-                Log.e("KHUSHI", "KHUSHI last open "+ user.getLastopen());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("KHUSHI", "Failed to read user", error.toException());
-            }
-        });
     }
 }
