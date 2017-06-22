@@ -1,6 +1,7 @@
 package com.bpk.rewards;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bpk.rewards.interfaces.ServerTimeAsyncResponse;
+import com.bpk.rewards.utility.Constants;
+import com.bpk.rewards.utility.PrefUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,7 +58,10 @@ public class SplashActivity extends Activity implements ServerTimeAsyncResponse 
 
     @Override
     public void processFinish(String result) {
-            gotoMain();
+        Log.e("KHUSHI", "KHUSHI process finish "+Long.parseLong(result));
+        PrefUtils.saveToPrefs(this, Constants.SERVER_TIME,Long.parseLong(result));
+
+        gotoMain();
      }
 }
 
@@ -91,6 +97,7 @@ class GetServerFromTime extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         Log.d("KHUSHI", " KHUSHISSSS time " + result);
+
         delegate.processFinish(result);
     }
 }

@@ -1,6 +1,7 @@
 package com.bpk.rewards.utility;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,9 +26,14 @@ public class Utils {
 
 
     public static boolean isNewDate(long lastOpenTime, long serverTime) {
-        Date lastOpen = new Date(lastOpenTime);
-        Date current = new Date(serverTime);
-        return lastOpen.after(current);
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+        Date d1 = new Date(lastOpenTime);
+        Date d2 = new Date(serverTime*1000);
+        Log.e("LOG","KHU last "+fmt.format(d1));
+
+        Log.e("LOG","KHU SER "+fmt.format(d2));
+        return !fmt.format(d1).equals(fmt.format(d2));
     }
 
     public static String getUserId(Context context) {

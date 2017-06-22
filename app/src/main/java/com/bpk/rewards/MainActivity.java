@@ -85,7 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 if (user == null) {
                     return;
                 }
-                PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_ID, user.getUserId());
+
+                PrefUtils.saveToPrefs(MainActivity.this, Constants.LAST_DAILY_REWARD,user.getLastopen());
+
+                boolean isNewDay = Utils.isNewDate(user.getLastopen(),PrefUtils.getFromPrefs(MainActivity.this,Constants.SERVER_TIME,user.getLastopen()));
+
+                Log.e("KHUSHI", "KHUSHI is new Day " + isNewDay);
+
+           //     PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_ID, user.getUserId());
                 txtPoints.setText(" " + user.getPoints() + "  ");
                 Log.e("KHUSHI", "KHUSHI last open " + user.getLastopen());
             }

@@ -1,5 +1,6 @@
 package com.bpk.rewards.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bpk.rewards.LoginActivity;
+import com.bpk.rewards.MainActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
+import com.bpk.rewards.utility.Utils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
@@ -23,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
@@ -75,7 +80,43 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnDailyReward:
-                Toast.makeText(getActivity(),"Claim Reward ",Toast.LENGTH_LONG).show();
+                long serverTime = PrefUtils.getFromPrefs(getActivity(), Constants.SERVER_TIME, (long) 0.0);
+                long lastDailyReward = PrefUtils.getFromPrefs(getActivity(), Constants.LAST_DAILY_REWARD, (long) 0.0);
+                boolean dailyReward = Utils.isNewDate(lastDailyReward,serverTime);
+
+
+                if(dailyReward){
+                    Toast.makeText(getActivity(),"Claim Reward ",Toast.LENGTH_LONG).show();
+                    rewardsPoints(15,"Daily", "Reward");
+                    PrefUtils.saveToPrefs(getActivity(), Constants.LAST_DAILY_REWARD, serverTime);
+
+                    mFirebaseUserDatabase.child(Utils.getUserId(getActivity())).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            if (dataSnapshot.getValue() != null) {
+                                Log.d(TAG, "KHUSHI111 snapshot setting last open" + dataSnapshot.getValue());
+                                mFirebaseUserDatabase.child(Utils.getUserId(getActivity())).child("lastopen").setValue(ServerValue.TIMESTAMP);
+
+
+                            } else {
+                                Log.d(TAG, "KHUSHI111 snapshot Error setting lastopne");
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                } else {
+                    Toast.makeText(getActivity(),"Already Claimed",Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
             case  R.id.btnAdmob:
                 Toast.makeText(getActivity(),"Admob ",Toast.LENGTH_LONG).show();
@@ -171,7 +212,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                     ut.setSource(source);
                     ut.setPoints(points);
                     ut.setType(type);
-                    //      ut.toMap();
                     mFirebaseTransactionDatabase.child(userId).push().setValue(ut.toMap());
                 } else {
                     mFirebaseUserDatabase.child(userId).child("points").setValue(points);

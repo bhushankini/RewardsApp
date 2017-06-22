@@ -5,13 +5,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bpk.rewards.MainActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.adapter.HistoryAdapter;
 import com.bpk.rewards.model.UserTransaction;
+import com.bpk.rewards.utility.Constants;
+import com.bpk.rewards.utility.PrefUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +44,6 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_leaderboard, container, false);
         recycler = (RecyclerView) root.findViewById(R.id.lb_recycler_view);
-
         return root;
     }
 

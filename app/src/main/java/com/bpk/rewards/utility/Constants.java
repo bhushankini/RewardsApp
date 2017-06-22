@@ -11,4 +11,7 @@ public class Constants {
 
     public static String USER_ID = "user_id";
 
+    public static String SERVER_TIME = "server_time";
+    public static String LAST_DAILY_REWARD = "last_daily_reward";
+
 }
