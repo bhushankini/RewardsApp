@@ -29,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.vungle.publisher.EventListener;
+import com.vungle.publisher.VunglePub;
 
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
 
@@ -41,6 +43,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     private DatabaseReference mFirebaseUserDatabase;
     private DatabaseReference mFirebaseTransactionDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    final VunglePub vunglePub = VunglePub.getInstance();
+
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -48,6 +52,10 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate Video");
+        // initialize the Publisher SDK
+        vunglePub.init(getActivity(), Constants.VUNGLE_APP_ID);
+        vunglePub.setEventListeners(vungleAdListener);
 
     }
 
@@ -55,6 +63,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG,"onCreateView Video");
+
         final View view = inflater.inflate(R.layout.fragment_video, container, false);
         btnDailyReward = (Button) view.findViewById(R.id.btnDailyReward);
         btnDailyReward.setOnClickListener(this);
@@ -128,7 +138,11 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
 
                 break;
             case  R.id.btnVungle:
-                Toast.makeText(getActivity(),"Vungle ",Toast.LENGTH_LONG).show();
+                if(vunglePub.isAdPlayable()) {
+                    vunglePub.playAd();
+                } else {
+                    Toast.makeText(getActivity(),"Video is not ready",Toast.LENGTH_LONG).show();
+                }
                 break;
             default:
         }
@@ -197,6 +211,41 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     }
 
 
+    //Vungle
+    private final EventListener vungleAdListener = new EventListener() {
+        @Override
+        public void onAdEnd(boolean b, boolean b1) {
+            Log.d(TAG, "KHUSHI Vungle ad ended b= "+b+ "  b1= "+b1  );
+            if(b == true){
+                rewardsPoints(2,"Vungle", "Video");
+            }
+        }
+
+        @Override
+        public void onAdStart() {
+            Log.d(TAG, "KHUSHI Vungle onAdStart " );
+
+        }
+
+        @Override
+        public void onAdUnavailable(String s) {
+            Log.d(TAG, "KHUSHI Vungle ad onAdUnavailable " );
+
+        }
+
+        @Override
+        public void onAdPlayableChanged(boolean b) {
+            Log.d(TAG, "KHUSHI Vungle ad onAdPlayableChanged " );
+
+        }
+
+        @Override
+        public void onVideoView(boolean b, int i, int i1) {
+            Log.d(TAG, "KHUSHI Vungle ad onVideoView " );
+
+        }
+    };
+
     private void rewardsPoints(final int points, final String source, final String type) {
         Log.d(TAG, "KHUSHI updatePoints ");
         final String userId = PrefUtils.getFromPrefs(getActivity(), Constants.USER_ID, "unknownuser");
@@ -227,5 +276,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         });
         //
     }
+
 
 }
