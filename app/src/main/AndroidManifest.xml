@@ -15,6 +15,9 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
+        <meta-data android:name="applovin.sdk.key"
+            android:value="TyL2BoRnkUrX4Ta8KrQ9tnsdTL09-zfXw0Z5o_sWUh2TFchZR6kItZxLwyUvv9RpA_vy_mSURU2g6kFXrzriXn"  />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -41,7 +44,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
 
-
+        <activity android:name="com.applovin.adview.AppLovinInterstitialActivity" />
+        <activity android:name="com.applovin.adview.AppLovinConfirmationActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

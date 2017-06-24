@@ -9,6 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.applovin.adview.AppLovinIncentivizedInterstitial;
+import com.applovin.sdk.AppLovinAd;
+import com.applovin.sdk.AppLovinAdClickListener;
+import com.applovin.sdk.AppLovinAdDisplayListener;
+import com.applovin.sdk.AppLovinAdLoadListener;
+import com.applovin.sdk.AppLovinAdRewardListener;
+import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
+import com.applovin.sdk.AppLovinErrorCodes;
 import com.bpk.rewards.R;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
@@ -29,6 +37,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.vungle.publisher.EventListener;
 import com.vungle.publisher.VunglePub;
 
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
 
     private String TAG = "REWARDS";
@@ -41,6 +52,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     private DatabaseReference mFirebaseTransactionDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private final VunglePub vunglePub = VunglePub.getInstance();
+    private AppLovinIncentivizedInterstitial myIncent;
+
 
     public VideoFragment() {
         // Required empty public constructor
@@ -53,6 +66,22 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         // initialize the Publisher SDK
         vunglePub.init(getActivity(), Constants.VUNGLE_APP_ID);
         vunglePub.setEventListeners(vungleAdListener);
+        myIncent = AppLovinIncentivizedInterstitial.create(getActivity());
+
+        // Preload call using a new load listener
+        myIncent.preload(new AppLovinAdLoadListener() {
+            @Override
+            public void adReceived(AppLovinAd appLovinAd) {
+                // A rewarded video was successfully received.
+                Log.d(TAG, "BHUSHAN applovin add loded");
+            }
+
+            @Override
+            public void failedToReceiveAd(int errorCode) {
+                // A rewarded video failed to load.
+                Log.d(TAG, "BHUSHAN applovin failed " + errorCode);
+            }
+        });
 
     }
 
@@ -132,6 +161,124 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
             case R.id.btnAppLovin:
                 Toast.makeText(getActivity(),"App Lovin ",Toast.LENGTH_LONG).show();
 
+                if (myIncent.isAdReadyToDisplay()) {
+                    //
+                    // OPTIONAL: Create listeners
+                    //
+
+                    // Reward Listener
+                    AppLovinAdRewardListener adRewardListener = new AppLovinAdRewardListener() {
+                        @Override
+                        public void userRewardVerified(AppLovinAd appLovinAd, Map map) {
+                            // AppLovin servers validated the reward. Refresh user balance from your server.  We will also pass the number of coins
+                            // awarded and the name of the currency.  However, ideally, you should verify this with your server before granting it.
+
+                            // i.e. - "Coins", "Gold", whatever you set in the dashboard.
+                            String currencyName = (String) map.get("currency");
+
+                            // For example, "5" or "5.00" if you've specified an amount in the UI.
+                            String amountGivenString = (String) map.get("amount");
+
+                            log("Rewarded " + amountGivenString + " " + currencyName);
+
+                            // By default we'll show a alert informing your user of the currency & amount earned.
+                            // If you don't want this, you can turn it off in the Manage Apps UI.
+                        }
+
+                        @Override
+                        public void userOverQuota(AppLovinAd appLovinAd, Map map) {
+                            // Your user has already earned the max amount you allowed for the day at this point, so
+                            // don't give them any more money. By default we'll show them a alert explaining this,
+                            // though you can change that from the AppLovin dashboard.
+
+                            log("Reward validation request exceeded quota with response: " + map);
+                        }
+
+                        @Override
+                        public void userRewardRejected(AppLovinAd appLovinAd, Map map) {
+                            // Your user couldn't be granted a reward for this view. This could happen if you've blacklisted
+                            // them, for example. Don't grant them any currency. By default we'll show them an alert explaining this,
+                            // though you can change that from the AppLovin dashboard.
+
+                            log("Reward validation request was rejected with response: " + map);
+                        }
+
+                        @Override
+                        public void validationRequestFailed(AppLovinAd appLovinAd, int responseCode) {
+                            if (responseCode == AppLovinErrorCodes.INCENTIVIZED_USER_CLOSED_VIDEO) {
+                                // Your user exited the video prematurely. It's up to you if you'd still like to grant
+                                // a reward in this case. Most developers choose not to. Note that this case can occur
+                                // after a reward was initially granted (since reward validation happens as soon as a
+                                // video is launched).
+                            } else if (responseCode == AppLovinErrorCodes.INCENTIVIZED_SERVER_TIMEOUT || responseCode == AppLovinErrorCodes.INCENTIVIZED_UNKNOWN_SERVER_ERROR) {
+                                // Some server issue happened here. Don't grant a reward. By default we'll show the user
+                                // a alert telling them to try again later, but you can change this in the
+                                // AppLovin dashboard.
+                            } else if (responseCode == AppLovinErrorCodes.INCENTIVIZED_NO_AD_PRELOADED) {
+                                // Indicates that the developer called for a rewarded video before one was available.
+                                // Note: This code is only possible when working with rewarded videos.
+                            }
+
+                            log("Reward validation request failed with error code: " + responseCode);
+                        }
+
+                        @Override
+                        public void userDeclinedToViewAd(AppLovinAd appLovinAd) {
+                            // This method will be invoked if the user selected "no" when asked if they want to view an ad.
+                            // If you've disabled the pre-video prompt in the "Manage Apps" UI on our website, then this method won't be called.
+
+                            log("User declined to view ad");
+                        }
+                    };
+
+                    // Video Playback Listener
+                    AppLovinAdVideoPlaybackListener adVideoPlaybackListener = new AppLovinAdVideoPlaybackListener() {
+                        @Override
+                        public void videoPlaybackBegan(AppLovinAd appLovinAd) {
+                            log("Video Started");
+                        }
+
+                        @Override
+                        public void videoPlaybackEnded(AppLovinAd appLovinAd, double v, boolean b) {
+                            log("Video Ended");
+                            rewardsPoints(2,"Applovin", "Video");
+                        }
+                    };
+
+                    // Ad Dispaly Listener
+                    AppLovinAdDisplayListener adDisplayListener = new AppLovinAdDisplayListener() {
+                        @Override
+                        public void adDisplayed(AppLovinAd appLovinAd) {
+                            log("Ad Displayed");
+                        }
+
+                        @Override
+                        public void adHidden(AppLovinAd appLovinAd) {
+                            log("Ad Dismissed");
+                            myIncent.preload(null);
+
+                        }
+                    };
+
+                    // Ad Click Listener
+                    AppLovinAdClickListener adClickListener = new AppLovinAdClickListener() {
+                        @Override
+                        public void adClicked(AppLovinAd appLovinAd) {
+                            log("Ad Click");
+                        }
+                    };
+
+                    /*
+                     NOTE: We recommend the use of placements (AFTER creating them in your dashboard):
+                     incentivizedInterstitial.show("REWARDED_VIDEO_DEMO_SCREEN", adRewardListener, adVideoPlaybackListener, adDisplayListener, adClickListener);
+                     To learn more about placements, check out https://applovin.com/integration#androidPlacementsIntegration
+                     */
+                    myIncent.show(getActivity() ,adRewardListener, adVideoPlaybackListener, adDisplayListener, adClickListener);
+                } else {
+                    Toast.makeText(getActivity(),"Video is not ready",Toast.LENGTH_LONG).show();
+                }
+
+
                 break;
             case  R.id.btnVungle:
                 if(vunglePub.isAdPlayable()) {
@@ -144,6 +291,9 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         }
     }
 
+    private void log(String s){
+        Log.d(TAG,"BHUSHAN "+s);
+    }
     //Admob Start
     @Override
     public void onRewardedVideoAdLoaded() {
