@@ -11,11 +11,11 @@ import java.util.Map;
  */
 
 public class UserTransaction {
-    String source;
+    private String source;
 
-    int points;
-    String type;
-    long timestamp;
+    private int points;
+    private String type;
+    private long timestamp;
     public static final String FIREBASE_TRANSACTION_ROOT = "transactions";
 
     public long getTimestamp() {

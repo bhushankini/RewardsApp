@@ -1,6 +1,5 @@
 package com.bpk.rewards.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsViewHolder> {
 
     private ArrayList<Rewards> dataSet;
-    private Context context;
 
     public static class RewardsViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,9 +31,8 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         }
     }
 
-    public RewardsAdapter(Context context, ArrayList<Rewards> data) {
+    public RewardsAdapter(ArrayList<Rewards> data) {
         this.dataSet = data;
-        this.context = context;
     }
 
     @Override

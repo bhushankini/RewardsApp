@@ -1,17 +1,5 @@
 <resources>
     <string name="app_name">My Rewards</string>
-    <string name="btnNewGame">New Game</string>
-    <string name="btnNewGameCPU">New Game vs CPU</string>
-    <string name="btnEasy">Easy</string>
-    <string name="btnNormal">Normal</string>
-    <string name="btnHard">Hard</string>
-    <string name="btnImpossible">Impossible</string>
-    <string name="title">Tic Tac Toe</string>
-    <string name="difficulty">Select Difficulty</string>
-    <string name="txtPlayer">Player:</string>
-    <string name="txtCPU">CPU:</string>
-    <string name="watchVideo">Watch Video</string>
-
     <string name="facebook_app_id">1334545699916025</string>
     <string name="fb_login_protocol_scheme">fb1334545699916025</string>
 

@@ -4,16 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.bpk.rewards.LoginActivity;
-import com.bpk.rewards.MainActivity;
 import com.bpk.rewards.R;
-import com.bpk.rewards.SplashActivity;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -25,7 +22,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AccountFragment extends Fragment {
 
-    Button btnLogout;
+    private Button btnLogout;
     public AccountFragment() {
         // Required empty public constructor
     }

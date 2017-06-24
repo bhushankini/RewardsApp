@@ -1,6 +1,5 @@
 package com.bpk.rewards.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.bpk.rewards.LoginActivity;
-import com.bpk.rewards.MainActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
@@ -35,15 +32,15 @@ import com.vungle.publisher.VunglePub;
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
 
     private String TAG = "REWARDS";
-    Button btnDailyReward;
-    Button btnAppLovin;
-    Button btnAdmob;
-    Button btnVungle;
+    private Button btnDailyReward;
+    private Button btnAppLovin;
+    private Button btnAdmob;
+    private Button btnVungle;
     private RewardedVideoAd mRewardedVideoAd;
     private DatabaseReference mFirebaseUserDatabase;
     private DatabaseReference mFirebaseTransactionDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    final VunglePub vunglePub = VunglePub.getInstance();
+    private final VunglePub vunglePub = VunglePub.getInstance();
 
     public VideoFragment() {
         // Required empty public constructor

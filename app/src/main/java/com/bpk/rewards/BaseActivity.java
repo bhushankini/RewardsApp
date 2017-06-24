@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 public class BaseActivity extends AppCompatActivity {
 
     @VisibleForTesting
-    public ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
@@ -34,5 +34,4 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         hideProgressDialog();
     }
-
 }

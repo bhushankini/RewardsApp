@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // Buttons
         findViewById(R.id.signin_button).setOnClickListener(this);
         findViewById(R.id.signup_button).setOnClickListener(this);
-     //   findViewById(R.id.sign_out_button).setOnClickListener(this);
+        //   findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.txtForgotPassword).setOnClickListener(this);
 
         // [START initialize_auth]
@@ -108,7 +108,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-       // Log.d(TAG,"USER PROVIDER "+ currentUser.isEmailVerified());
+        // Log.d(TAG,"USER PROVIDER "+ currentUser.isEmailVerified());
         updateUI(currentUser);
     }
     // [END on_start_check_user]
@@ -204,26 +204,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void updateUI(FirebaseUser user) {
 
-        if(user!=null) {
-            hideProgressDialog();
-            if (user != null) {
-                Log.d(TAG, "Login Success " + user.getDisplayName());
-                PrefUtils.saveToPrefs(LoginActivity.this, Constants.USER_ID, user.getUid());
-                User u = new User();
-                u.setUserId(user.getUid());
-                u.setEmail(user.getEmail());
-                u.setName(user.getDisplayName());
-                newUser(u);
-                user.getDisplayName();
-                Log.d(TAG, "Login SuccessUser  " + user);
+        hideProgressDialog();
+        if (user != null) {
+            Log.d(TAG, "Login Success " + user.getDisplayName());
+            PrefUtils.saveToPrefs(LoginActivity.this, Constants.USER_ID, user.getUid());
+            User u = new User();
+            u.setUserId(user.getUid());
+            u.setEmail(user.getEmail());
+            u.setName(user.getDisplayName());
+            newUser(u);
+            user.getDisplayName();
+            Log.d(TAG, "Login SuccessUser  " + user);
 
 
-            } else {
-                PrefUtils.saveToPrefs(LoginActivity.this, Constants.USER_ID, null);
-                Log.d(TAG, "Error in Login");
-            }
         } else {
-            Toast.makeText(LoginActivity.this,"Verify your email",Toast.LENGTH_LONG).show();
+            PrefUtils.saveToPrefs(LoginActivity.this, Constants.USER_ID, null);
+            Log.d(TAG, "Error in Login");
         }
     }
 
@@ -298,7 +294,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.signin_button) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }  else if (i == R.id.txtForgotPassword) {
-         //  sendEmailVerification();
+            //  sendEmailVerification();
             sendForgotPassword();
         }
 //        else if (i == R.id.sign_out_button) {
@@ -342,7 +338,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // [END send_email_verification]
     }
 
-    void sendForgotPassword(){
+    private void sendForgotPassword(){
         FirebaseAuth.getInstance().sendPasswordResetEmail("bhushan.kini@gmail.com")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

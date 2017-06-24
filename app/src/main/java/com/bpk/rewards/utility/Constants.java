@@ -11,9 +11,9 @@ public class Constants {
 
     public static final String VUNGLE_APP_ID = "5934df78c1602b2d08001f57";
 
-    public static String USER_ID = "user_id";
+    public static final String USER_ID = "user_id";
 
-    public static String SERVER_TIME = "server_time";
-    public static String LAST_DAILY_REWARD = "last_daily_reward";
+    public static final String SERVER_TIME = "server_time";
+    public static final String LAST_DAILY_REWARD = "last_daily_reward";
 
 }

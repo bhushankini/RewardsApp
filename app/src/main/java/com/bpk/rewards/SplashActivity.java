@@ -1,7 +1,6 @@
 package com.bpk.rewards;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,7 +67,7 @@ public class SplashActivity extends Activity implements ServerTimeAsyncResponse 
 
 class GetServerFromTime extends AsyncTask<String, Void, String> {
 
-    public ServerTimeAsyncResponse delegate = null;//Call back interface
+    private ServerTimeAsyncResponse delegate = null;//Call back interface
 
     public GetServerFromTime(ServerTimeAsyncResponse asyncResponse) {
         delegate = asyncResponse;//Assigning call back interfacethrough constructor
@@ -82,7 +81,7 @@ class GetServerFromTime extends AsyncTask<String, Void, String> {
                 new Request.Builder()
                         .url("http://mobilemauj.com/mangela/servertime.php")
                         .build();
-        Response response = null;
+        Response response;
         try {
             response = client.newCall(request).execute();
             if (response.isSuccessful()) {

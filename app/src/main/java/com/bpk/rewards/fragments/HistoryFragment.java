@@ -5,17 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bpk.rewards.MainActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.adapter.HistoryAdapter;
 import com.bpk.rewards.model.UserTransaction;
-import com.bpk.rewards.utility.Constants;
-import com.bpk.rewards.utility.PrefUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,9 +28,9 @@ import java.util.Collections;
 
 public class HistoryFragment extends Fragment {
 
-    HistoryAdapter adapter;
-    ArrayList<UserTransaction> userHistory = new ArrayList<>();
-    RecyclerView recycler;
+    private HistoryAdapter adapter;
+    private ArrayList<UserTransaction> userHistory = new ArrayList<>();
+    private RecyclerView recycler;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -54,13 +50,7 @@ public class HistoryFragment extends Fragment {
         recycler.setHasFixedSize(true);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    void updateUserHistory() {
+    private void updateUserHistory() {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(UserTransaction.FIREBASE_TRANSACTION_ROOT);
         Query queryRef = ref.orderByChild("timestamp");

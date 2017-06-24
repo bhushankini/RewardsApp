@@ -28,16 +28,11 @@ import java.util.ArrayList;
 public class RewardsFragment extends Fragment {
 
 
-    RewardsAdapter adapter;
-    ArrayList<Rewards> rewardsList = new ArrayList<>();
-    RecyclerView recycler;
+    private RewardsAdapter adapter;
+    private ArrayList<Rewards> rewardsList = new ArrayList<>();
+    private RecyclerView recycler;
     public RewardsFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -67,7 +62,7 @@ public class RewardsFragment extends Fragment {
                     rewardsList.add(txn);
                 }
                 //  Collections.reverse(rewardsList);
-                adapter = new RewardsAdapter(getActivity(),rewardsList);
+                adapter = new RewardsAdapter(rewardsList);
                 recycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

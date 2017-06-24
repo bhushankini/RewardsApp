@@ -2,9 +2,7 @@ package com.bpk.rewards;
 
 import android.app.Application;
 
-import com.bpk.rewards.utility.Constants;
 import com.facebook.FacebookSdk;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
