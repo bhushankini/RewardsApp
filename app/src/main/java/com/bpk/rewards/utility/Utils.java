@@ -2,7 +2,6 @@ package com.bpk.rewards.utility;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -15,7 +14,7 @@ public class Utils {
 
 
     public static String localTime(long utcTime) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm a"); //this format changeable
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm a"); //this format changeable
         dateFormatter.setTimeZone(TimeZone.getDefault());
         return dateFormatter.format(utcTime);
     }

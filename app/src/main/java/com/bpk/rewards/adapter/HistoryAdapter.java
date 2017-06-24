@@ -26,7 +26,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
-            this.txtSource = (TextView) itemView.findViewById(R.id.tv_source);
+            this.txtSource = (TextView) itemView.findViewById(R.id.tv_display);
             this.txtPoints = (TextView) itemView.findViewById(R.id.tv_points);
             this.txtTime = (TextView) itemView.findViewById(R.id.tv_timestamp);
         }
@@ -42,8 +42,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_history, parent, false);
 
-        HistoryViewHolder myViewHolder = new HistoryViewHolder(view);
-        return myViewHolder;
+        return new HistoryViewHolder(view);
     }
 
     @Override

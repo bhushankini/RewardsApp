@@ -94,7 +94,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                 long lastDailyReward = PrefUtils.getFromPrefs(getActivity(), Constants.LAST_DAILY_REWARD, (long) 0.0);
                 boolean dailyReward = Utils.isNewDate(lastDailyReward,serverTime);
 
-
                 if(dailyReward){
                     Toast.makeText(getActivity(),"Claim Reward ",Toast.LENGTH_LONG).show();
                     rewardsPoints(15,"Daily", "Reward");
@@ -199,7 +198,14 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
 
     private void loadRewardedVideoAd() {
         if (!mRewardedVideoAd.isLoaded()) {
-            mRewardedVideoAd.loadAd(Constants.ADMOB_AD_UNIT_ID, new AdRequest.Builder().addTestDevice("F98B32499B302F1D5145AF987EACC26E").build());
+            //Nexus 5
+          //  mRewardedVideoAd.loadAd(Constants.ADMOB_AD_UNIT_ID, new AdRequest.Builder().addTestDevice("F98B32499B302F1D5145AF987EACC26E").build());
+
+            //Moto g
+            mRewardedVideoAd.loadAd(Constants.ADMOB_AD_UNIT_ID, new AdRequest.Builder().addTestDevice("56480886047D624B5EC3065A430E7E04").build());
+
+
+
         }
     }
 
@@ -216,7 +222,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         @Override
         public void onAdEnd(boolean b, boolean b1) {
             Log.d(TAG, "KHUSHI Vungle ad ended b= "+b+ "  b1= "+b1  );
-            if(b == true){
+            if(b){
                 rewardsPoints(2,"Vungle", "Video");
             }
         }

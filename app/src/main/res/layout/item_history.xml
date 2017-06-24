@@ -23,7 +23,7 @@
 
 
             <TextView
-                android:id="@+id/tv_source"
+                android:id="@+id/tv_display"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="14sp"
