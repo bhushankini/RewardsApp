@@ -1,5 +1,6 @@
 package com.bpk.rewards.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,17 +18,20 @@ import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdRewardListener;
 import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
 import com.applovin.sdk.AppLovinErrorCodes;
+import com.bpk.rewards.LoginActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
 import com.bpk.rewards.utility.Utils;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +43,8 @@ import com.vungle.publisher.VunglePub;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
 
@@ -350,9 +356,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
 
             //Moto g
             mRewardedVideoAd.loadAd(Constants.ADMOB_AD_UNIT_ID, new AdRequest.Builder().addTestDevice("56480886047D624B5EC3065A430E7E04").build());
-
-
-
         }
     }
 
@@ -415,6 +418,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                     ut.setPoints(points);
                     ut.setType(type);
                     mFirebaseTransactionDatabase.child(userId).push().setValue(ut.toMap());
+                    showPointsRewardsDialog(points);
                 } else {
                     mFirebaseUserDatabase.child(userId).child("points").setValue(points);
                     // txtPoints.setText(points + "  "); //update points label
@@ -430,5 +434,13 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         //
     }
 
+
+    void showPointsRewardsDialog(int points){
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.BUTTON_POSITIVE)
+                .setTitleText("Congratulations!!!")
+                .setCustomImage(R.mipmap.ic_launcher)
+                .setContentText("Congratulations you got "+points)
+                .show();
+    }
 
 }

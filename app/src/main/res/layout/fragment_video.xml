@@ -13,7 +13,7 @@
         android:id="@+id/rl_dailyreward"
         android:background="@drawable/relative_layout_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:padding="5dp"
 
@@ -22,33 +22,38 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignBottom="@+id/btnDailyReward"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="30dp"
-                android:background="@mipmap/applovin_logo"/>
+                android:background="@mipmap/ic_daily_reward"/>
 
             <TextView
                 android:layout_width="272dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/claim_daily_reward"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnDailyReward"
-            android:layout_alignParentRight="true"
             android:theme="@style/WatchButton"
             android:text="@string/claim"
             android:drawableLeft="@mipmap/ic_videoa"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_applovin"
         android:background="@drawable/relative_layout_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_below="@+id/rl_dailyreward"
         android:padding="5dp"
 
@@ -57,7 +62,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignTop="@+id/btnAppLovin">
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="30dp"
@@ -66,17 +72,19 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/watch_earn"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnAppLovin"
-            android:layout_alignParentRight="true"
             android:theme="@style/WatchButton"
             android:text="@string/watch"
             android:drawableLeft="@mipmap/ic_videoa"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
@@ -84,7 +92,7 @@
         android:id="@+id/rl_admob"
         android:background="@drawable/relative_layout_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_below="@+id/rl_applovin"
         android:padding="5dp"
         android:layout_margin="5dp"
@@ -92,7 +100,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignBottom="@+id/btnAdmob"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="30dp"
@@ -101,17 +112,19 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/watch_earn"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnAdmob"
-            android:layout_alignParentRight="true"
             android:theme="@style/WatchButton"
             android:text="@string/watch"
             android:drawableLeft="@mipmap/ic_videoa"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
@@ -119,7 +132,7 @@
         android:id="@+id/rl_vungle"
         android:background="@drawable/relative_layout_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_below="@+id/rl_admob"
         android:padding="5dp"
         android:layout_margin="5dp"
@@ -127,7 +140,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignBottom="@+id/btnVungle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="30dp"
@@ -136,17 +152,19 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:text="@string/watch_earn"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnVungle"
-            android:layout_alignParentRight="true"
             android:theme="@style/WatchButton"
             android:text="@string/watch"
             android:drawableLeft="@mipmap/ic_videoa"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
