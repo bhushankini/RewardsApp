@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,20 +54,24 @@ public class HistoryFragment extends Fragment {
     private void updateUserHistory() {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(UserTransaction.FIREBASE_TRANSACTION_ROOT);
-        Query queryRef = ref.orderByChild("timestamp");
-
-        queryRef.addChildEventListener(new ChildEventListener() {
+     //   Query queryRef = ref;//.orderByChild("timestamp");
+        ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+                Log.d("TAG","KKKKK Clear History "+userHistory.size());
                 userHistory.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("TAG","KKKKK size "+userHistory.size());
+
                     UserTransaction txn = ds.getValue(UserTransaction.class);
                     userHistory.add(txn);
                 }
-                Collections.reverse(userHistory);
+                 Collections.reverse(userHistory);
                 adapter = new HistoryAdapter(userHistory);
+
                 recycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -94,6 +99,8 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("TAG","KKKKK onResume");
+
         updateUserHistory();
     }
 }

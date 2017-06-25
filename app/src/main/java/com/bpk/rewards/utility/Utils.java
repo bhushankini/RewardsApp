@@ -1,6 +1,8 @@
 package com.bpk.rewards.utility;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,5 +39,13 @@ public class Utils {
 
     public static String getUserId(Context context) {
         return PrefUtils.getFromPrefs(context, Constants.USER_ID, "GUEST");
+    }
+
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

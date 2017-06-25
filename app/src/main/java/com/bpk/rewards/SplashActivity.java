@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
+import android.widget.Toast;
 import com.bpk.rewards.interfaces.ServerTimeAsyncResponse;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
+import com.bpk.rewards.utility.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.io.IOException;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -32,14 +31,17 @@ public class SplashActivity extends Activity implements ServerTimeAsyncResponse 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mAuth = FirebaseAuth.getInstance();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                GetServerFromTime task = new GetServerFromTime(SplashActivity.this);
-                task.execute();
-            }
-        }, 1500);
+        if(Utils.isNetworkAvailable(this)) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    GetServerFromTime task = new GetServerFromTime(SplashActivity.this);
+                    task.execute();
+                }
+            }, 1500);
+        } else {
+            Toast.makeText(this, "NO Internet",Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -61,7 +63,7 @@ public class SplashActivity extends Activity implements ServerTimeAsyncResponse 
         PrefUtils.saveToPrefs(this, Constants.SERVER_TIME,Long.parseLong(result));
 
         gotoMain();
-     }
+    }
 }
 
 

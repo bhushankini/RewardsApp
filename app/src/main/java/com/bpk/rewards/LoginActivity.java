@@ -175,7 +175,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            if(user!=null && user.isEmailVerified()) {
+                            if(user!=null /*&& user.isEmailVerified()*/) {
                                 updateUI(user);
                             }
                             else {
@@ -294,7 +294,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.signin_button) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }  else if (i == R.id.txtForgotPassword) {
-            //  sendEmailVerification();
+           //   sendEmailVerification();
             sendForgotPassword();
         }
 //        else if (i == R.id.sign_out_button) {

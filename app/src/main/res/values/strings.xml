@@ -17,6 +17,7 @@
     <string name="watch"> Watch</string>
     <string name="claim"> Claim</string>
     <string name="claim_daily_reward">Claim your daily reward 15 points</string>
+    <string name="retry">Retry</string>
 
 
 </resources>
