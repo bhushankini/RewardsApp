@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,15 @@ import android.view.ViewGroup;
 import com.bpk.rewards.R;
 import com.bpk.rewards.adapter.HistoryAdapter;
 import com.bpk.rewards.model.UserTransaction;
+import com.bpk.rewards.utility.Utils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-
 import java.util.ArrayList;
 import java.util.Collections;
+
 
 /**
  * Created by bkini on 6/18/17.
@@ -52,17 +51,12 @@ public class HistoryFragment extends Fragment {
     }
 
     private void updateUserHistory() {
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(UserTransaction.FIREBASE_TRANSACTION_ROOT);
-     //   Query queryRef = ref;//.orderByChild("timestamp");
-        ref.addChildEventListener(new ChildEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
+        ref.orderByKey().equalTo(Utils.getUserId(getActivity())).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                Log.d("TAG","KKKKK Clear History "+userHistory.size());
                 userHistory.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    Log.d("TAG","KKKKK size "+userHistory.size());
-
                     UserTransaction txn = ds.getValue(UserTransaction.class);
                     userHistory.add(txn);
                 }
@@ -99,8 +93,6 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("TAG","KKKKK onResume");
-
         updateUserHistory();
     }
 }
