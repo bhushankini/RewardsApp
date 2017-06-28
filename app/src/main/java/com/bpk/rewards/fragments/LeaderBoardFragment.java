@@ -56,7 +56,7 @@ public class LeaderBoardFragment extends Fragment {
                     User user = ds.getValue(User.class);
                     userArrayList.add(user);
                 }
-                adapter = new LeaderBoardAdapter(userArrayList);
+                adapter = new LeaderBoardAdapter(getActivity(),userArrayList);
                 recycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+
         txtPoints = (TextView) findViewById(R.id.toolbar_points);
         //  txtPoints.setText("100 points");
         mFirebaseInstance = FirebaseDatabase.getInstance();

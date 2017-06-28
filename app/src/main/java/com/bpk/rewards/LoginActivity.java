@@ -62,10 +62,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         // Buttons
         findViewById(R.id.signin_button).setOnClickListener(this);
-        findViewById(R.id.signup_button).setOnClickListener(this);
+     //   findViewById(R.id.signup_button).setOnClickListener(this);
         //   findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.txtForgotPassword).setOnClickListener(this);
-
+        findViewById(R.id.txtCreateAccount).setOnClickListener(this);
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -212,6 +212,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             u.setUserId(user.getUid());
             u.setEmail(user.getEmail());
             u.setName(user.getDisplayName());
+            u.setPhotoUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
             newUser(u);
             user.getDisplayName();
             Log.d(TAG, "Login SuccessUser  " + user);
@@ -245,97 +246,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return valid;
     }
 
-
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
-        showProgressDialog();
-
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "createUserWithEmail:success");
-                            sendEmailVerification();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:exception "+task.getException().getClass());
-
-                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                Toast.makeText(LoginActivity.this,
-                                        "User with this email already exist.", Toast.LENGTH_SHORT).show();
-                                Log.w(TAG, "User with this email already exist");
-
-
-                            }
-                            updateUI(null);
-                        }
-
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END create_user_with_email]
-    }
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.signup_button) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+        if (i == R.id.txtCreateAccount) {
+            startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         } else if (i == R.id.signin_button) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }  else if (i == R.id.txtForgotPassword) {
-           //   sendEmailVerification();
             sendForgotPassword();
         }
-//        else if (i == R.id.sign_out_button) {
-//            signOut();
-//        } else if (i == R.id.verify_email_button) {
-//            sendEmailVerification();
-//        }
-    }
-
-    private void sendEmailVerification() {
-        // Disable button
-        findViewById(R.id.txtForgotPassword).setEnabled(false);
-
-        // Send verification email
-        // [START send_email_verification]
-        final FirebaseUser user = mAuth.getCurrentUser();
-
-
-        user.sendEmailVerification()
-
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                        findViewById(R.id.txtForgotPassword).setEnabled(true);
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(LoginActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END send_email_verification]
     }
 
     private void sendForgotPassword(){
@@ -358,14 +278,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "KHUSHI111 snapshot " + dataSnapshot.getValue());
                 if (dataSnapshot.getValue() != null) {
-                    Log.d(TAG, "KHUSHI111 USER Exists");
-
+                    Log.d(TAG, "KHUSHI111 USER Exists ");
+             //       mFirebaseDatabase.child(user.getUserId()).setValue(user);
 
                 } else {
-                    Log.d(TAG, "KHUSHI111 new USER create reward");
+                    Log.d(TAG, "KHUSHI111 new USER create rewar d");
 
                     mFirebaseDatabase.child(user.getUserId()).setValue(user);
-
                 }
                 finish();
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
@@ -376,6 +295,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             }
         });
-
     }
 }

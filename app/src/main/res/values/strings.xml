@@ -11,6 +11,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
     <string name="signed_out">Signed Out</string>
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="watch_earn">Watch video to earn 2 coins</string>
@@ -18,6 +19,4 @@
     <string name="claim"> Claim</string>
     <string name="claim_daily_reward">Claim your daily reward 15 points</string>
     <string name="retry">Retry</string>
-
-
 </resources>
