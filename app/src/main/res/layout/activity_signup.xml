@@ -56,6 +56,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name"
+                        android:text="Anjali Kini"
                         android:textColor="@color/colorAccent"
                         android:inputType="textPersonName" />
                 </android.support.design.widget.TextInputLayout>
@@ -71,6 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
+                        android:text="khushibkini@gmail.com"
                         android:textColor="@color/colorAccent"
                         android:inputType="textEmailAddress" />
                 </android.support.design.widget.TextInputLayout>
@@ -85,6 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Password"
+                        android:text="qqqqq111"
                         android:textColor="@color/colorAccent"
                         android:inputType="textPassword"/>
                 </android.support.design.widget.TextInputLayout>
@@ -100,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorAccent"
                         android:hint="Re-enter Password"
+                        android:text="qqqqq111"
                         android:inputType="textPassword"/>
                 </android.support.design.widget.TextInputLayout>
 

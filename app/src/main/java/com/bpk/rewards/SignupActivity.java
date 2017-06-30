@@ -1,6 +1,7 @@
 package com.bpk.rewards;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SignupActivity extends BaseActivity {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "SignUpActivity";
     Button btnSignUp;
     TextView txtLogin;
     TextView txtName;
@@ -60,11 +62,7 @@ public class SignupActivity extends BaseActivity {
         txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //     Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                //      startActivity(intent);
                 finish();
-                //    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-
             }
         });
 
@@ -141,7 +139,8 @@ public class SignupActivity extends BaseActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             sendEmailVerification();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            addUserDetails();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:exception "+task.getException().getClass());
@@ -153,7 +152,7 @@ public class SignupActivity extends BaseActivity {
 
 
                             }
-                            updateUI(null);
+                            updateUI();
                         }
 
                         // [START_EXCLUDE]
@@ -162,6 +161,26 @@ public class SignupActivity extends BaseActivity {
                     }
                 });
         // [END create_user_with_email]
+    }
+
+    private void addUserDetails() {
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(txtName.getText().toString())
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated.");
+                            updateUI();
+                        }
+                    }
+                });
     }
 
     private void sendEmailVerification() {
@@ -173,7 +192,6 @@ public class SignupActivity extends BaseActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
                         // Re-enable button
-                        findViewById(R.id.txtForgotPassword).setEnabled(true);
 
                         if (task.isSuccessful()) {
                             Toast.makeText(SignupActivity.this,
@@ -191,17 +209,16 @@ public class SignupActivity extends BaseActivity {
         // [END send_email_verification]
     }
 
-    private void updateUI(FirebaseUser user) {
-
+    private void updateUI() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         hideProgressDialog();
         if (user != null) {
-            Log.d(TAG, "Login Success " + user.getDisplayName());
+            Log.d(TAG, "Signup Success " + user.getDisplayName());
             PrefUtils.saveToPrefs(SignupActivity.this, Constants.USER_ID, user.getUid());
             User u = new User();
             u.setUserId(user.getUid());
             u.setEmail(user.getEmail());
-            u.setName(user.getDisplayName());
-            u.setPhotoUrl(user.getPhotoUrl().toString());
+            u.setName(txtName.getText().toString());
             newUser(u);
             user.getDisplayName();
             Log.d(TAG, "Login SuccessUser  " + user);
