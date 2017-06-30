@@ -3,21 +3,33 @@ package com.bpk.rewards.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bpk.rewards.LoginActivity;
 import com.bpk.rewards.R;
+import com.bpk.rewards.SignupActivity;
 import com.bpk.rewards.utility.Utils;
 import com.facebook.login.LoginManager;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -32,6 +44,13 @@ public class AccountFragment extends Fragment {
     private Button btnRetry;
     private RelativeLayout rlMain;
     private RelativeLayout rlNoConnection;
+    private RelativeLayout rlEmailVerification;
+    private CircularImageView imgProfile;
+    private TextView txtUserName;
+    private TextView txtUserEmail;
+    private TextView txtSendVerificationMail;
+
+
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -102,6 +121,20 @@ public class AccountFragment extends Fragment {
                 checkConnection();
             }
         });
+        imgProfile = (CircularImageView) view.findViewById(R.id.img_profile);
+        txtUserName = (TextView) view.findViewById(R.id.txtUserName);
+        txtUserEmail= (TextView) view.findViewById(R.id.txtUserEmail);
+        txtSendVerificationMail = (TextView) view.findViewById(R.id.txtSendVerificationMail);
+        rlEmailVerification = (RelativeLayout) view.findViewById(R.id.rl_email_verification);
+        txtSendVerificationMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // Toast.makeText(getActivity(),"Send Verification Email",Toast.LENGTH_LONG).show();
+                sendEmailVerification();
+            }
+        });
+        updateUI();
+
     }
 
     @Override
@@ -110,6 +143,51 @@ public class AccountFragment extends Fragment {
         checkConnection();
     }
 
+    void updateUI(){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(!currentUser.isEmailVerified()) {
+            rlEmailVerification.setVisibility(View.VISIBLE);
+        }
+        else {
+            rlEmailVerification.setVisibility(View.GONE);
+        }
+
+        txtUserEmail.setText(currentUser.getEmail());
+        txtUserName.setText(currentUser.getDisplayName());
+
+        Log.d("TAG","LLLLL is user verified "+currentUser.isEmailVerified());
+
+        if(currentUser.getPhotoUrl()!=null)
+        Picasso.with(getActivity()).load(currentUser.getPhotoUrl()).placeholder(R.drawable.user_icon).into(imgProfile);
+
+    }
+
+
+    private void sendEmailVerification() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.sendEmailVerification()
+
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        // Re-enable button
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(),
+                                    "Verification email sent to " + user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("TAG", "sendEmailVerification", task.getException());
+                            Toast.makeText(getActivity(),
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END send_email_verification]
+    }
     private void checkConnection(){
         if(Utils.isNetworkAvailable(getActivity())){
             rlMain.setVisibility(View.VISIBLE);

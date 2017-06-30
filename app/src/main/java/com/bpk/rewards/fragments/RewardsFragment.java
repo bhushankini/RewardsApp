@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bpk.rewards.R;
+import com.bpk.rewards.adapter.LeaderBoardAdapter;
 import com.bpk.rewards.adapter.RewardsAdapter;
 import com.bpk.rewards.model.Rewards;
+import com.bpk.rewards.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by bkini on 6/18/17.
@@ -50,31 +53,29 @@ public class RewardsFragment extends Fragment {
         recycler.setHasFixedSize(true);
     }
 
-    private void getRewardsList() {
+    void getRewardsList() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Rewards.FIREBASE_REWARDS_ROOT);
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.orderByChild("display").addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 rewardsList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Rewards txn = ds.getValue(Rewards.class);
                     rewardsList.add(txn);
                 }
-                //  Collections.reverse(rewardsList);
+
                 adapter = new RewardsAdapter(rewardsList);
                 recycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("KHUSHI", "Failed to read user", error.toException());
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
-
     @Override
     public void onResume() {
         super.onResume();

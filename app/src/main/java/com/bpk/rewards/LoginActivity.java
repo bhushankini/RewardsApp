@@ -212,7 +212,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             u.setUserId(user.getUid());
             u.setEmail(user.getEmail());
             u.setName(user.getDisplayName());
-            u.setPhotoUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+            if(user.getPhotoUrl()!=null)
+                u.setPhotoUrl(user.getPhotoUrl().toString());
             newUser(u);
             user.getDisplayName();
             Log.d(TAG, "Login SuccessUser  " + user);
