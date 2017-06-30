@@ -12,13 +12,14 @@ import android.view.ViewGroup;
 import com.bpk.rewards.R;
 import com.bpk.rewards.adapter.LeaderBoardAdapter;
 import com.bpk.rewards.model.User;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by bkini on 6/18/17.
@@ -46,34 +47,28 @@ public class LeaderBoardFragment extends Fragment {
         recycler.setHasFixedSize(true);
     }
 
-    private void updateLeaderBoard() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT).getParent();
-        ref.addChildEventListener(new ChildEventListener() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateLeaderBoard();
+    }
+
+    void updateLeaderBoard(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT);
+        ref.orderByChild("points").limitToLast(10).addValueEventListener(new ValueEventListener() {
+
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 userArrayList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     User user = ds.getValue(User.class);
                     userArrayList.add(user);
                 }
-                adapter = new LeaderBoardAdapter(getActivity(),userArrayList);
+
+                Collections.reverse(userArrayList);
+                adapter = new LeaderBoardAdapter(getActivity(), userArrayList);
                 recycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -81,11 +76,5 @@ public class LeaderBoardFragment extends Fragment {
 
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateLeaderBoard();
     }
 }
