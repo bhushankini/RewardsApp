@@ -33,6 +33,7 @@
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".SignupActivity"/>
+        <activity android:name=".ForgotPasswordActivity"/>
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"

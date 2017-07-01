@@ -259,20 +259,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else if (i == R.id.signin_button) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }  else if (i == R.id.txtForgotPassword) {
-            sendForgotPassword();
+            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
         }
-    }
-
-    private void sendForgotPassword(){
-        FirebaseAuth.getInstance().sendPasswordResetEmail("bhushan.kini@gmail.com")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Email sent.");
-                        }
-                    }
-                });
     }
 
 
