@@ -14,6 +14,7 @@ public class User {
     private long lastopen;
     private String email;
     private String photoUrl;
+    private String referalId;
     public static final String FIREBASE_USER_ROOT = "users";
 
     // Default constructor required for calls to
@@ -21,12 +22,13 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String name, int points, long lastopen, String photoUrl) {
+    public User(String userId, String name, int points, long lastopen, String photoUrl, String referalId) {
         this.name = name;
         this.userId = userId;
         this.points = points;
         this.lastopen = lastopen;
         this.photoUrl = photoUrl;
+        this.referalId = referalId;
     }
 
     public int getPoints() {
@@ -75,5 +77,13 @@ public class User {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public void setReferalId(String referalId) {
+        this.referalId = referalId;
+    }
+
+    public String getReferalId() {
+        return referalId;
     }
 }

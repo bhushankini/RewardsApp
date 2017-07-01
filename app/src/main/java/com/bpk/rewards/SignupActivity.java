@@ -1,7 +1,6 @@
 package com.bpk.rewards;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bpk.rewards.model.User;
+import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +44,8 @@ public class SignupActivity extends BaseActivity {
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-
+    private DatabaseReference mRefererFirebaseDatabase;
+    private DatabaseReference mFirebaseTransactionDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,8 +139,10 @@ public class SignupActivity extends BaseActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
                             sendEmailVerification();
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            PrefUtils.saveToPrefs(SignupActivity.this, Constants.USER_ID, task.getResult().getUser().getUid());
+                            //
                             addUserDetails();
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -162,6 +165,40 @@ public class SignupActivity extends BaseActivity {
                 });
         // [END create_user_with_email]
     }
+
+
+    private void rewardsReferralPoints(final String referrer) {
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        mRefererFirebaseDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
+        mFirebaseTransactionDatabase = mFirebaseInstance.getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
+        FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT).child(referrer).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    long totalPoints = (long) dataSnapshot.getValue();
+                    mRefererFirebaseDatabase.child(referrer).child("points").setValue(totalPoints + Constants.REFERAL_POINTS);
+                    UserTransaction ut = new UserTransaction();
+                    ut.setSource("Referal");
+                    ut.setPoints(Constants.REFERAL_POINTS);
+                    ut.setType("Bonus");
+                    mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
+                } else {
+                //    mFirebaseUserDatabase.child(userId).child("points").setValue(points);
+                    // txtPoints.setText(points + "  "); //update points label
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+          finish();
+          startActivity(new Intent(SignupActivity.this,MainActivity.class));
+
+    }
+
 
     private void addUserDetails() {
 
@@ -198,7 +235,6 @@ public class SignupActivity extends BaseActivity {
                                     "Verification email sent to " + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(SignupActivity.this,
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
@@ -213,16 +249,15 @@ public class SignupActivity extends BaseActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         hideProgressDialog();
         if (user != null) {
-            Log.d(TAG, "Signup Success " + user.getDisplayName());
             PrefUtils.saveToPrefs(SignupActivity.this, Constants.USER_ID, user.getUid());
             User u = new User();
             u.setUserId(user.getUid());
             u.setEmail(user.getEmail());
             u.setName(txtName.getText().toString());
+            u.setPoints(Constants.REFERAL_POINTS);
+            String referid = PrefUtils.getFromPrefs(SignupActivity.this,Constants.REFERRER_ID,"");
+            u.setReferalId(referid);
             newUser(u);
-            user.getDisplayName();
-            Log.d(TAG, "Login SuccessUser  " + user);
-
 
         } else {
             PrefUtils.saveToPrefs(SignupActivity.this, Constants.USER_ID, null);
@@ -231,7 +266,7 @@ public class SignupActivity extends BaseActivity {
     }
 
     private void newUser(final User user){
-        Log.d(TAG, "KHUSHI111 new User ");
+
         mFirebaseDatabase.child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -239,15 +274,13 @@ public class SignupActivity extends BaseActivity {
                 if (dataSnapshot.getValue() != null) {
                     Log.d(TAG, "KHUSHI111 USER Exists");
 
-
                 } else {
                     Log.d(TAG, "KHUSHI111 new USER create reward");
 
                     mFirebaseDatabase.child(user.getUserId()).setValue(user);
-
+                    rewardsReferralPoints(user.getReferalId());
                 }
-                finish();
-                startActivity(new Intent(SignupActivity.this,MainActivity.class));
+
             }
 
             @Override
