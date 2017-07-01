@@ -79,7 +79,9 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
             case 105: //vodafone
                 imgReward.setImageResource(R.drawable.vodafone_icon);
                 break;
-
+            case 106: //Jio
+                imgReward.setImageResource(R.drawable.jio_icon);
+                break;
         }
         txtValue.setOnClickListener(new View.OnClickListener() {
             @Override

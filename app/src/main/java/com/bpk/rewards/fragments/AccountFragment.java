@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.bpk.rewards.LoginActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.SignupActivity;
+import com.bpk.rewards.utility.Constants;
+import com.bpk.rewards.utility.PrefUtils;
 import com.bpk.rewards.utility.Utils;
 import com.facebook.login.LoginManager;
 import com.facebook.share.model.ShareLinkContent;
@@ -83,6 +85,7 @@ public class AccountFragment extends Fragment {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                PrefUtils.saveToPrefs(getActivity(), Constants.REFERRER_ID,"");
                                 FirebaseAuth.getInstance().signOut();
                                 LoginManager.getInstance().logOut();
                                 startActivity(new Intent(getActivity(),LoginActivity.class));

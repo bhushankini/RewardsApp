@@ -10,8 +10,10 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.bpk.rewards.model.User;
+import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
+import com.bpk.rewards.utility.Utils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -43,6 +45,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    private DatabaseReference mRefererFirebaseDatabase;
+    private DatabaseReference mFirebaseTransactionDatabase;
 
     private CallbackManager mCallbackManager;
 
@@ -272,8 +276,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-    private void newUser(final User user){
+    private void newUser(final User user) {
         Log.d(TAG, "KHUSHI111 new User ");
+        final String referrer = PrefUtils.getFromPrefs(LoginActivity.this,Constants.REFERRER_ID,"");
         mFirebaseDatabase.child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -281,14 +286,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (dataSnapshot.getValue() != null) {
                     Log.d(TAG, "KHUSHI111 USER Exists ");
              //       mFirebaseDatabase.child(user.getUserId()).setValue(user);
+                    gotoMain();
 
                 } else {
-                    Log.d(TAG, "KHUSHI111 new USER create rewar d");
 
+                    Log.d(TAG, "KHUSHI111 new USER create reward referrer is "+referrer);
+                    if(referrer.length() > 0)
+                        user.setReferalId(referrer);
+                    user.setPoints(2 * Constants.REFERAL_POINTS);
                     mFirebaseDatabase.child(user.getUserId()).setValue(user);
+                    rewardsReferralPoints(referrer);
                 }
-                finish();
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
+             //   finish();
+             //   startActivity(new Intent(LoginActivity.this,MainActivity.class));
             }
 
             @Override
@@ -296,5 +307,51 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             }
         });
+    }
+
+    private void gotoMain(){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser!= null ){
+
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        else {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+        finish();
+    }
+
+    private void rewardsReferralPoints(final String referrer) {
+        if(referrer.length() > 0) {
+            mFirebaseInstance = FirebaseDatabase.getInstance();
+            mRefererFirebaseDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
+            mFirebaseTransactionDatabase = mFirebaseInstance.getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
+            FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT).child(referrer).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        long totalPoints = (long) dataSnapshot.getValue();
+                        mRefererFirebaseDatabase.child(referrer).child("points").setValue(totalPoints + Constants.REFERAL_POINTS);
+                        UserTransaction ut = new UserTransaction();
+                        ut.setSource("Referal");
+                        ut.setPoints(Constants.REFERAL_POINTS);
+                        ut.setType("Bonus");
+                        mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
+
+                        UserTransaction userTxn = new UserTransaction();
+                        userTxn.setSource("Welcome");
+                        userTxn.setPoints(2*Constants.REFERAL_POINTS);
+                        userTxn.setType("Bonus");
+                        mFirebaseTransactionDatabase.child(Utils.getUserId(LoginActivity.this)).push().setValue(userTxn.toMap());
+
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        gotoMain();
     }
 }

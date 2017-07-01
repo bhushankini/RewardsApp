@@ -24,5 +24,7 @@ public class InstallReceiver extends BroadcastReceiver {
         }
     }
 }
-//am broadcast -a com.android.vending.INSTALL_REFERRER -n com.bpk.rewards/.InstallReceiver --es "referrer" "pAsMEu9uKDeuIJuPPqweNXmJb3Z2"
+//am broadcast -a com.android.vending.INSTALL_REFERRER -n com.bpk.rewards/.InstallReceiver --es "referrer" "PTIfXtTDhgWqDIyRSrK2Rx2S7773"
 //https://play.google.com/store/apps/details?id=com.bpk.rewards&referrer=ABCDEFGHIJKLMNO
+//PTIfXtTDhgWqDIyRSrK2Rx2S7773
+//pAsMEu9uKDeuIJuPPqweNXmJb3Z2

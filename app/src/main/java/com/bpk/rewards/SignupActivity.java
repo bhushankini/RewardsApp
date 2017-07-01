@@ -14,6 +14,7 @@ import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
+import com.bpk.rewards.utility.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -182,6 +183,14 @@ public class SignupActivity extends BaseActivity {
                     ut.setPoints(Constants.REFERAL_POINTS);
                     ut.setType("Bonus");
                     mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
+
+
+                    UserTransaction userTxn = new UserTransaction();
+                    userTxn.setSource("Welcome");
+                    userTxn.setPoints(2*Constants.REFERAL_POINTS);
+                    userTxn.setType("Bonus");
+                    mFirebaseTransactionDatabase.child(Utils.getUserId(SignupActivity.this)).push().setValue(userTxn.toMap());
+
                 } else {
                 //    mFirebaseUserDatabase.child(userId).child("points").setValue(points);
                     // txtPoints.setText(points + "  "); //update points label
@@ -254,7 +263,7 @@ public class SignupActivity extends BaseActivity {
             u.setUserId(user.getUid());
             u.setEmail(user.getEmail());
             u.setName(txtName.getText().toString());
-            u.setPoints(Constants.REFERAL_POINTS);
+            u.setPoints(2 * Constants.REFERAL_POINTS);
             String referid = PrefUtils.getFromPrefs(SignupActivity.this,Constants.REFERRER_ID,"");
             u.setReferalId(referid);
             newUser(u);
