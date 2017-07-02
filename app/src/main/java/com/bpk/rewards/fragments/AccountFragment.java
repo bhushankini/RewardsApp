@@ -14,10 +14,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bpk.rewards.LoginActivity;
 import com.bpk.rewards.R;
-import com.bpk.rewards.SignupActivity;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
 import com.bpk.rewards.utility.Utils;
@@ -30,9 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -61,7 +56,6 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
 
@@ -75,17 +69,17 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Sign Out!")
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText(getString(R.string.sign_out))
                         .setCustomImage(R.mipmap.ic_launcher)
-                        .setConfirmText("Signout")
-                        .setCancelText("Cancel")
+                        .setConfirmText(getString(R.string.sign_out))
+                        .setCancelText(getString(R.string.cancel))
                         .showCancelButton(true)
                         .setContentText("Are you sure you want to signout?")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                PrefUtils.saveToPrefs(getActivity(), Constants.REFERRER_ID,"");
+                                PrefUtils.removeFromPrefs(getActivity(), Constants.REFERRER_ID);
                                 FirebaseAuth.getInstance().signOut();
                                 LoginManager.getInstance().logOut();
                                 startActivity(new Intent(getActivity(),LoginActivity.class));
@@ -102,7 +96,6 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ShareDialog shareDialog;
-               // FacebookSdk.sdkInitialize(getApplicationContext());
                 shareDialog = new ShareDialog(getActivity());
 
                 ShareLinkContent linkContent = new ShareLinkContent.Builder()
@@ -146,9 +139,9 @@ public class AccountFragment extends Fragment {
         checkConnection();
     }
 
-    void updateUI(){
+    private void updateUI(){
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(!currentUser.isEmailVerified()) {
+        if(currentUser != null && !currentUser.isEmailVerified()) {
             rlEmailVerification.setVisibility(View.VISIBLE);
         }
         else {
@@ -158,39 +151,34 @@ public class AccountFragment extends Fragment {
         txtUserEmail.setText(currentUser.getEmail());
         txtUserName.setText(currentUser.getDisplayName());
 
-        Log.d("TAG","LLLLL is user verified "+currentUser.isEmailVerified());
-
         if(currentUser.getPhotoUrl()!=null)
         Picasso.with(getActivity()).load(currentUser.getPhotoUrl()).placeholder(R.drawable.user_icon).into(imgProfile);
 
     }
 
-
     private void sendEmailVerification() {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.sendEmailVerification()
+        if(user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(),
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("TAG", "sendEmailVerification", task.getException());
-                            Toast.makeText(getActivity(),
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(),
+                                        "Verification email sent to " + user.getEmail(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("TAG", "sendEmailVerification", task.getException());
+                                Toast.makeText(getActivity(),
+                                        "Failed to send verification email.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END send_email_verification]
+                    });
+        }
     }
+
     private void checkConnection(){
         if(Utils.isNetworkAvailable(getActivity())){
             rlMain.setVisibility(View.VISIBLE);

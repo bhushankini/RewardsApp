@@ -71,7 +71,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="Credits"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
 
                     android:textStyle="bold" />
             </LinearLayout>

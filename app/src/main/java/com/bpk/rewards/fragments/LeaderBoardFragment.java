@@ -53,7 +53,7 @@ public class LeaderBoardFragment extends Fragment {
         updateLeaderBoard();
     }
 
-    void updateLeaderBoard(){
+    private void updateLeaderBoard(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT);
         ref.orderByChild("points").limitToLast(10).addValueEventListener(new ValueEventListener() {
 

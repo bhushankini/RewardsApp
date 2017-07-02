@@ -43,7 +43,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
 
-    private String TAG = "REWARDS";
+    private final String TAG = "REWARDS";
     private Button btnDailyReward;
     private Button btnAppLovin;
     private Button btnAdmob;
@@ -430,7 +430,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     }
 
 
-    void showPointsRewardsDialog(int points){
+    private void showPointsRewardsDialog(int points){
         new SweetAlertDialog(getActivity(), SweetAlertDialog.BUTTON_POSITIVE)
                 .setTitleText("Congratulations!!!")
                 .setCustomImage(R.mipmap.ic_launcher)

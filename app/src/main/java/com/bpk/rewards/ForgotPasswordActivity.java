@@ -24,9 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ForgotPasswordActivity extends BaseActivity {
 
-    private static final String TAG = "SignUpActivity";
-    Button btnSubmit;
-    TextView txtEmail;
+    private Button btnSubmit;
+    private TextView txtEmail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         });
     }
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
         String email = txtEmail.getText().toString();
 

@@ -35,12 +35,12 @@ import com.google.firebase.database.ValueEventListener;
 public class SignupActivity extends BaseActivity {
 
     private static final String TAG = "SignUpActivity";
-    Button btnSignUp;
-    TextView txtLogin;
-    TextView txtName;
-    TextView txtEmail;
-    TextView txtPassword;
-    TextView txtRePassword;
+    private Button btnSignUp;
+    private TextView txtLogin;
+    private TextView txtName;
+    private TextView txtEmail;
+    private TextView txtPassword;
+    private TextView txtRePassword;
     private FirebaseAuth mAuth;
 
     private DatabaseReference mFirebaseDatabase;
@@ -53,7 +53,7 @@ public class SignupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        btnSignUp =(Button) findViewById(R.id.signup_button);
+        btnSignUp = (Button) findViewById(R.id.signup_button);
         txtLogin = (TextView) findViewById(R.id.link_login);
         txtName = (TextView) findViewById(R.id.input_name);
         txtEmail = (TextView) findViewById(R.id.input_email);
@@ -73,17 +73,15 @@ public class SignupActivity extends BaseActivity {
             public void onClick(View view) {
 
                 if (!validate()) {
-                    Log.d("TAG","KKK VAlidation failed");
                     return;
                 }
-                createAccount(txtEmail.getText().toString().trim(),txtPassword.getText().toString());
-                Log.d("TAG","KKK Signup New User");
+                createAccount(txtEmail.getText().toString().trim(), txtPassword.getText().toString());
             }
         });
     }
 
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
 
         String name = txtName.getText().toString();
@@ -143,22 +141,18 @@ public class SignupActivity extends BaseActivity {
                             PrefUtils.saveToPrefs(SignupActivity.this, Constants.USER_ID, task.getResult().getUser().getUid());
                             //
                             addUserDetails();
-
-
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:exception "+task.getException().getClass());
+                            Log.w(TAG, "createUserWithEmail:exception " + task.getException().getClass());
 
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Toast.makeText(SignupActivity.this,
                                         "User with this email already exist.", Toast.LENGTH_SHORT).show();
                                 Log.w(TAG, "User with this email already exist");
 
-
                             }
                             updateUI();
                         }
-
                         // [START_EXCLUDE]
                         hideProgressDialog();
                         // [END_EXCLUDE]
@@ -166,7 +160,6 @@ public class SignupActivity extends BaseActivity {
                 });
         // [END create_user_with_email]
     }
-
 
     private void rewardsReferralPoints(final String referrer) {
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -183,17 +176,11 @@ public class SignupActivity extends BaseActivity {
                     ut.setPoints(Constants.REFERAL_POINTS);
                     ut.setType("Bonus");
                     mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
-
-
                     UserTransaction userTxn = new UserTransaction();
                     userTxn.setSource("Welcome");
-                    userTxn.setPoints(2*Constants.REFERAL_POINTS);
+                    userTxn.setPoints(2 * Constants.REFERAL_POINTS);
                     userTxn.setType("Bonus");
                     mFirebaseTransactionDatabase.child(Utils.getUserId(SignupActivity.this)).push().setValue(userTxn.toMap());
-
-                } else {
-                //    mFirebaseUserDatabase.child(userId).child("points").setValue(points);
-                    // txtPoints.setText(points + "  "); //update points label
 
                 }
             }
@@ -203,11 +190,10 @@ public class SignupActivity extends BaseActivity {
 
             }
         });
-          finish();
-          startActivity(new Intent(SignupActivity.this,MainActivity.class));
+        finish();
+        startActivity(new Intent(SignupActivity.this, MainActivity.class));
 
     }
-
 
     private void addUserDetails() {
 
@@ -231,27 +217,24 @@ public class SignupActivity extends BaseActivity {
 
     private void sendEmailVerification() {
         final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SignupActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(SignupActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(SignupActivity.this,
+                                        "Verification email sent to " + user.getEmail(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(SignupActivity.this,
+                                        "Failed to send verification email.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END send_email_verification]
+                    });
+        }
     }
 
     private void updateUI() {
@@ -264,7 +247,7 @@ public class SignupActivity extends BaseActivity {
             u.setEmail(user.getEmail());
             u.setName(txtName.getText().toString());
             u.setPoints(2 * Constants.REFERAL_POINTS);
-            String referid = PrefUtils.getFromPrefs(SignupActivity.this,Constants.REFERRER_ID,"");
+            String referid = PrefUtils.getFromPrefs(SignupActivity.this, Constants.REFERRER_ID, "");
             u.setReferalId(referid);
             newUser(u);
 
@@ -274,7 +257,7 @@ public class SignupActivity extends BaseActivity {
         }
     }
 
-    private void newUser(final User user){
+    private void newUser(final User user) {
 
         mFirebaseDatabase.child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

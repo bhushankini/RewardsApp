@@ -19,9 +19,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtSource;
-        TextView txtPoints;
-        TextView txtTime;
+        private TextView txtSource;
+        private TextView txtPoints;
+        private TextView txtTime;
 
 
         public HistoryViewHolder(View itemView) {
@@ -53,10 +53,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
 
         txtSource.setText(dataSet.get(listPosition).getSource() + " " + dataSet.get(listPosition).getType());
-        txtPoints.setText("" + dataSet.get(listPosition).getPoints());
+        txtPoints.setText(""+dataSet.get(listPosition).getPoints());
         if (dataSet.get(listPosition).getPoints() > 0) {
             txtPoints.setTextColor(Color.parseColor("#006600"));
-            txtPoints.setText("+" + dataSet.get(listPosition).getPoints());
+            txtPoints.setText(""+dataSet.get(listPosition).getPoints());
 
         } else {
             txtPoints.setTextColor(Color.RED);

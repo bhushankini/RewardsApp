@@ -97,8 +97,6 @@ class GetServerFromTime extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        Log.d("KHUSHI", " KHUSHISSSS time " + result);
-
         delegate.processFinish(result);
     }
 }

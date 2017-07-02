@@ -7,28 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bpk.rewards.R;
 import com.bpk.rewards.model.User;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.LeaderBoardViewHolder> {
 
     private ArrayList<User> dataSet;
-    Context context;
+    private Context context;
 
     public static class LeaderBoardViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtName;
-        TextView txtPoints;
-
-        TextView txtRank;
-        ImageView imgProfile;
-
+        private TextView txtName;
+        private TextView txtPoints;
+        private TextView txtRank;
+        private ImageView imgProfile;
 
         public LeaderBoardViewHolder(View itemView) {
             super(itemView);
@@ -63,7 +57,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         ImageView imgProfile = holder.imgProfile;
 
         txtName.setText(dataSet.get(listPosition).getName());
-        txtPoints.setText("" + dataSet.get(listPosition).getPoints());
+        txtPoints.setText(""+dataSet.get(listPosition).getPoints());
         txtRank.setText("#"+(listPosition+1));
         Picasso.with(context).load(dataSet.get(listPosition).getPhotoUrl()).placeholder(R.drawable.user_icon).into(imgProfile);
 

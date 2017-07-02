@@ -5,28 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.bpk.rewards.R;
-import com.bpk.rewards.adapter.LeaderBoardAdapter;
 import com.bpk.rewards.adapter.RewardsAdapter;
 import com.bpk.rewards.model.Rewards;
-import com.bpk.rewards.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.Collections;
-
-/**
- * Created by bkini on 6/18/17.
- */
 
 public class RewardsFragment extends Fragment {
 
@@ -53,7 +43,7 @@ public class RewardsFragment extends Fragment {
         recycler.setHasFixedSize(true);
     }
 
-    void getRewardsList() {
+    private void getRewardsList() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Rewards.FIREBASE_REWARDS_ROOT);
         ref.orderByChild("display").addValueEventListener(new ValueEventListener() {
 
@@ -81,5 +71,4 @@ public class RewardsFragment extends Fragment {
         super.onResume();
         getRewardsList();
     }
-
 }

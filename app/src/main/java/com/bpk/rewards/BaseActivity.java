@@ -1,9 +1,5 @@
 package com.bpk.rewards;
 
-/**
- * Created by bkini on 6/1/17.
- */
-
 import android.app.ProgressDialog;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;

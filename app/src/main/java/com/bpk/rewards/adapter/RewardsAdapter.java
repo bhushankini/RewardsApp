@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bpk.rewards.R;
 import com.bpk.rewards.model.Rewards;
-
 import java.util.ArrayList;
 
 public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsViewHolder> {
@@ -20,10 +17,9 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
 
     public static class RewardsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtDisplay;
-        TextView txtValue;
-        ImageView imgReward;
-
+        private TextView txtDisplay;
+        private TextView txtValue;
+        private ImageView imgReward;
 
         public RewardsViewHolder(View itemView) {
             super(itemView);
@@ -54,7 +50,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         ImageView imgReward = holder.imgReward;
 
         txtDisplay.setText(dataSet.get(listPosition).getDisplay());
-        txtValue.setText(""+dataSet.get(listPosition).getValue());
+        txtValue.setText(dataSet.get(listPosition).getValue().toString());
 
         switch (dataSet.get(listPosition).getIcon()) {
             case 1://amazon

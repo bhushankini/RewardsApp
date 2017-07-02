@@ -20,6 +20,7 @@
     <string name="watch_earn">Watch video to earn 2 coins</string>
     <string name="watch"> Watch</string>
     <string name="claim"> Claim</string>
+    <string name="cancel">Cancel</string>
     <string name="claim_daily_reward">Claim your daily reward 15 points</string>
     <string name="retry">Retry</string>
     <string name="email_not_verified">Your email is not verified !</string>

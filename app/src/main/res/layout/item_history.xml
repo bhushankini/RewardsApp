@@ -43,7 +43,7 @@
                 android:layout_alignParentRight="true"/>
             <TextView
                 android:id="@+id/tv_timestamp"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_points"

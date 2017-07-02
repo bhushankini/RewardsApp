@@ -1,7 +1,4 @@
 package com.bpk.rewards.model;
-/**
- * Created by bkini on 5/28/17.
- */
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
