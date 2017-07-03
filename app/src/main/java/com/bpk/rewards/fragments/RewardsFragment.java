@@ -55,7 +55,7 @@ public class RewardsFragment extends Fragment {
                     rewardsList.add(txn);
                 }
 
-                adapter = new RewardsAdapter(rewardsList);
+                adapter = new RewardsAdapter(getActivity(),rewardsList);
                 recycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

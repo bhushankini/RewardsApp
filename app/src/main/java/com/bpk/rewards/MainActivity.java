@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 PrefUtils.saveToPrefs(MainActivity.this, Constants.LAST_DAILY_REWARD,user.getLastopen());
+                PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_NAME,user.getName());
 
                 boolean isNewDay = Utils.isNewDate(user.getLastopen(),PrefUtils.getFromPrefs(MainActivity.this,Constants.SERVER_TIME,user.getLastopen()));
 
