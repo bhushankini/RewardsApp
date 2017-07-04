@@ -162,34 +162,30 @@ public class SignupActivity extends BaseActivity {
     }
 
     private void rewardsReferralPoints(final String referrer) {
-        mFirebaseInstance = FirebaseDatabase.getInstance();
-        mRefererFirebaseDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
-        mFirebaseTransactionDatabase = mFirebaseInstance.getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
-        FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT).child(referrer).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    long totalPoints = (long) dataSnapshot.getValue();
-                    mRefererFirebaseDatabase.child(referrer).child("points").setValue(totalPoints + Constants.REFERAL_POINTS);
-                    UserTransaction ut = new UserTransaction();
-                    ut.setSource("Referal");
-                    ut.setPoints(Constants.REFERAL_POINTS);
-                    ut.setType("Bonus");
-                    mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
-                    UserTransaction userTxn = new UserTransaction();
-                    userTxn.setSource("Welcome");
-                    userTxn.setPoints(2 * Constants.REFERAL_POINTS);
-                    userTxn.setType("Bonus");
-                    mFirebaseTransactionDatabase.child(Utils.getUserId(SignupActivity.this)).push().setValue(userTxn.toMap());
+        if(referrer.length() > 0) {
+            mFirebaseInstance = FirebaseDatabase.getInstance();
+            mRefererFirebaseDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
+            mFirebaseTransactionDatabase = mFirebaseInstance.getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
+            FirebaseDatabase.getInstance().getReference(User.FIREBASE_USER_ROOT).child(referrer).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        long totalPoints = (long) dataSnapshot.getValue();
+                        mRefererFirebaseDatabase.child(referrer).child("points").setValue(totalPoints + Constants.REFERAL_POINTS);
+                        UserTransaction ut = new UserTransaction();
+                        ut.setSource("Referal");
+                        ut.setPoints(Constants.REFERAL_POINTS);
+                        ut.setType("Bonus");
+                        mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+            });
+        }
         finish();
         startActivity(new Intent(SignupActivity.this, MainActivity.class));
 
@@ -270,6 +266,14 @@ public class SignupActivity extends BaseActivity {
                     Log.d(TAG, "KHUSHI111 new USER create reward");
 
                     mFirebaseDatabase.child(user.getUserId()).setValue(user);
+                    Log.e("TAG","Give welcom bonus txn");
+                    UserTransaction userTxn = new UserTransaction();
+                    userTxn.setSource("Welcome");
+                    userTxn.setPoints(2*Constants.REFERAL_POINTS);
+                    userTxn.setType("Bonus");
+
+                    mFirebaseTransactionDatabase = mFirebaseInstance.getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
+                    mFirebaseTransactionDatabase.child(Utils.getUserId(SignupActivity.this)).push().setValue(userTxn.toMap());
                     rewardsReferralPoints(user.getReferalId());
                 }
 

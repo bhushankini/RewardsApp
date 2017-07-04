@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
@@ -65,7 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         // Buttons
         findViewById(R.id.signin_button).setOnClickListener(this);
-     //   findViewById(R.id.signup_button).setOnClickListener(this);
+        //   findViewById(R.id.signup_button).setOnClickListener(this);
         //   findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.txtForgotPassword).setOnClickListener(this);
         findViewById(R.id.txtCreateAccount).setOnClickListener(this);
@@ -266,27 +267,35 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void newUser(final User user) {
         Log.d(TAG, "KHUSHI111 new User ");
         final String referrer = PrefUtils.getFromPrefs(LoginActivity.this,Constants.REFERRER_ID,"");
+        mFirebaseTransactionDatabase = mFirebaseInstance.getReference(UserTransaction.FIREBASE_TRANSACTION_ROOT);
         mFirebaseDatabase.child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "KHUSHI111 snapshot " + dataSnapshot.getValue());
                 if (dataSnapshot.getValue() != null) {
                     Log.d(TAG, "KHUSHI111 USER Exists ");
-             //       mFirebaseDatabase.child(user.getUserId()).setValue(user);
+                    //       mFirebaseDatabase.child(user.getUserId()).setValue(user);
                     gotoMain();
 
                 } else {
 
                     Log.d(TAG, "KHUSHI111 new USER create reward referrer is "+referrer);
-                    if(referrer.length() > 0)
+                    if(referrer.length() > 0) {
                         user.setReferalId(referrer);
+                    }
                     user.setPoints(2 * Constants.REFERAL_POINTS);
                     mFirebaseDatabase.child(user.getUserId()).setValue(user);
+                    Log.e("TAG","Give welcom bonus txn");
+                    UserTransaction userTxn = new UserTransaction();
+                    userTxn.setSource("Welcome");
+                    userTxn.setPoints(2*Constants.REFERAL_POINTS);
+                    userTxn.setType("Bonus");
+                    mFirebaseTransactionDatabase.child(Utils.getUserId(LoginActivity.this)).push().setValue(userTxn.toMap());
                     rewardsReferralPoints(referrer);
                 }
 
-             //   finish();
-             //   startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                //   finish();
+                //   startActivity(new Intent(LoginActivity.this,MainActivity.class));
             }
 
             @Override
@@ -317,6 +326,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
+
                         long totalPoints = (long) dataSnapshot.getValue();
                         mRefererFirebaseDatabase.child(referrer).child("points").setValue(totalPoints + Constants.REFERAL_POINTS);
                         UserTransaction ut = new UserTransaction();
@@ -324,13 +334,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         ut.setPoints(Constants.REFERAL_POINTS);
                         ut.setType("Bonus");
                         mFirebaseTransactionDatabase.child(referrer).push().setValue(ut.toMap());
-
-                        UserTransaction userTxn = new UserTransaction();
-                        userTxn.setSource("Welcome");
-                        userTxn.setPoints(2*Constants.REFERAL_POINTS);
-                        userTxn.setType("Bonus");
-                        mFirebaseTransactionDatabase.child(Utils.getUserId(LoginActivity.this)).push().setValue(userTxn.toMap());
-
                     }
                 }
                 @Override
@@ -338,6 +341,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 }
             });
+
         }
         gotoMain();
     }
