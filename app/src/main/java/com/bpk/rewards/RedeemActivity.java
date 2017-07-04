@@ -47,6 +47,10 @@ public class RedeemActivity extends BaseActivity {
     private TextView txtValue;
     private TextView txtWorth;
     private TextView txtRecipient;
+    private TextView txtRegion;
+
+    private TextView txtDescription;
+
 
     private ImageView icon;
     private LinearLayout llCircle;
@@ -78,24 +82,29 @@ public class RedeemActivity extends BaseActivity {
         etRecipient = (EditText) findViewById(R.id.etRecipient);
         imgBigIcon = (ImageView) findViewById(R.id.imgBigIcon);
         spinnerCircle = (Spinner) findViewById(R.id.spinnerCircle);
-
+        txtDescription = (TextView)findViewById(R.id.txtDescription);
+        txtRegion = (TextView) findViewById(R.id.txtRegion);
+        circle = spinnerCircle.getSelectedItem().toString();
 
         rewards = (Rewards) getIntent().getSerializableExtra(Rewards.REWARD_EXTRAS);
         GradientDrawable myGrad = (GradientDrawable) rlCard.getBackground();
         myGrad.setColor( Color.parseColor(rewards.getBgcolor()));
-        Log.d("TAG", "Reward " + rewards.getBgcolor());
         if(rewards.getIcon()>100){
+            txtDescription.setText(getString(R.string.disclaimer_mobile));
             llCircle.setVisibility(View.VISIBLE);
-            etRecipient.setHint("Enter Mobile Number");
+            etRecipient.setHint(getString(R.string.mobile_hint));
             etRecipient.setInputType(InputType.TYPE_CLASS_PHONE);
             int maxLength = 10;
             etRecipient.setFilters(new InputFilter[] {
                     new InputFilter.LengthFilter(maxLength)
             });
+
+            txtRegion.setText("("+circle+")");
         }
         else {
+            txtDescription.setText(getString(R.string.disclaimer_giftcard));
             llCircle.setVisibility(View.GONE);
-            etRecipient.setHint("Enter email");
+            etRecipient.setHint(getString(R.string.email_hint));
             etRecipient.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
 
@@ -104,8 +113,10 @@ public class RedeemActivity extends BaseActivity {
         txtValue.setTextColor(Color.parseColor(textColor));
         txtWorth.setTextColor(Color.parseColor(textColor));
         txtRecipient.setTextColor(Color.parseColor(textColor));
+        txtRegion.setTextColor(Color.parseColor(textColor));
         txtWorth.setText(rewards.getWorth());
-        txtValue.setText(""+rewards.getValue());
+        txtValue.setText(""+rewards.getValue()+" points");
+        txtGiftCard.setText(rewards.getBrand());
         txtRecipient.setText(getString(R.string.recipient));
         String bigUrl = Rewards.IMAGES_BASE_URL+rewards.getBrand().toLowerCase()+"_big.png";
         String smallUrl = Rewards.IMAGES_BASE_URL+rewards.getBrand().toLowerCase()+"_small.png";
@@ -113,13 +124,16 @@ public class RedeemActivity extends BaseActivity {
         Picasso.with(this).load(smallUrl).into(icon);
         String to = String.format(getString(R.string.recipient),PrefUtils.getFromPrefs(this, Constants.USER_NAME,""));
         txtRecipient.setText(to);
-        txtGiftCard.setText(rewards.getBrand());
+
 
         btnRedeem.setOnClickListener(new View.OnClickListener() {
             String userId = Utils.getUserId(RedeemActivity.this);
             @Override
             public void onClick(View view) {
                 if (!validate()) {
+                    return;
+                } else if(!Utils.isNetworkAvailable(RedeemActivity.this)) {
+                    Toast.makeText(RedeemActivity.this,getString(R.string.no_network),Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -131,7 +145,6 @@ public class RedeemActivity extends BaseActivity {
                 mFirebaseUserDatabase.child(userId).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "KHUSHI snapshot " + dataSnapshot.getValue());
                         if (dataSnapshot.getValue() != null) {
                             long totalPoints = (long) dataSnapshot.getValue();
 
@@ -179,6 +192,7 @@ public class RedeemActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent,
                                        View view, int pos, long id) {
                 circle = parent.getItemAtPosition(pos).toString();
+                txtRegion.setText("("+circle+")");
             }
 
             @Override
@@ -243,7 +257,7 @@ public class RedeemActivity extends BaseActivity {
         String recipient = etRecipient.getText().toString();
 
         if(rewards.getIcon() < 100) {
-//EMail
+        //Email
             if (recipient.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(recipient).matches()) {
                 etRecipient.setError("enter a valid email address");
                 valid = false;

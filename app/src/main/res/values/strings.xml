@@ -21,6 +21,7 @@
     <string name="watch"> Watch</string>
     <string name="claim"> Claim</string>
     <string name="redeem">Redeem</string>
+    <string name="points">points</string>
     <string name="cancel">Cancel</string>
     <string name="claim_daily_reward">Claim your daily reward 15 points</string>
     <string name="retry">Retry</string>
@@ -38,6 +39,15 @@
     <string name="aircel_recharge">Aircel Recharge</string>
     <string name="jio_recharge">Jio Recharge</string>
     <string name="select_circle">Select Mobile Circle</string>
+    <string name="mobile_hint">Enter Mobile Number</string>
+    <string name="email_hint">Enter Email</string>
+    <string name="no_network">No Network. Check you internet</string>
+
+
+    <string name="disclaimer_mobile">**Important**\nProvide valid prepaid mobile number and circle for redeeming the mobile recharge.\n
+        \n*All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only.</string>
+    <string name="disclaimer_giftcard">**Important**\nProvide valid email for redeeming the gift rard.\n
+        \n*All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only.</string>
 
     <array name="mobile_circle">
         <item>Andra Pradesh</item>
