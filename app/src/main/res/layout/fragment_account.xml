@@ -82,11 +82,15 @@
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_email_verification"
+            android:background="@drawable/button_background"
+            android:textColor="@color/white"
+
+            android:layout_alignParentBottom="true"
             android:text="@string/sign_out" />
 
         <Button
             android:id="@+id/btnShare"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnLogout"

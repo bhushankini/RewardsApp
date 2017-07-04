@@ -28,7 +28,7 @@
                     android:layout_height="60dp"
                     android:layout_alignParentLeft="true"
                     android:padding="5dp"
-                    android:src="@drawable/vodafone_icon" />
+                    />
 
                 <LinearLayout
                     android:id="@+id/lltop"
@@ -69,7 +69,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:text="₹200"
-
                     android:textColor="@color/white"
                     android:textSize="26sp"
                     android:textStyle= "italic|bold"/>
