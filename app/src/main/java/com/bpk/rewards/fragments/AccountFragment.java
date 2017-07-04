@@ -1,8 +1,12 @@
 package com.bpk.rewards.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +32,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -95,21 +104,15 @@ public class AccountFragment extends Fragment {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShareDialog shareDialog;
-                shareDialog = new ShareDialog(getActivity());
+                share();
+                /*
 
-                ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                        .setContentTitle("My Rewards")
-                        .setContentDescription(
-                                "\"Some more descriptve text\"")
-                        .setQuote("Some text here in quote")
-                        .setContentUrl(Uri.parse("https:mobilemauj.com"))
-                        .build();
-
-                shareDialog.show(linkContent);
+                */
 
             }
         });
+
+
         btnRetry = (Button) view.findViewById(R.id.btnRetry);
         btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +140,35 @@ public class AccountFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkConnection();
+    }
+
+
+    void share(){
+        Intent shareIntent;
+
+        shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,"My Rewards app");
+        shareIntent.putExtra(Intent.EXTRA_REFERRER,"new referer");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey get mobile recharge and gift cards " + "https://play.google.com/store/apps/details?id=com.bpk.rewards");
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+    }
+    void shareOnFacebook(){
+        ShareDialog shareDialog;
+        shareDialog = new ShareDialog(getActivity());
+        String url ="https://play.google.com/store/apps/details?id=com.bpk.rewards&referrer="+Utils.getUserId(getActivity());
+        //String url = "https://play.google.com/apps/testing/com.bpk.rewards&referrer="+Utils.getUserId(getActivity());
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentTitle("My Rewards")
+                .setContentDescription(
+                        "\"Some more descriptve text\"")
+                .setQuote("Get mobile recharge & gift cards for using this app!!")
+                .setContentUrl(Uri.parse(url))
+                .build();
+
+        shareDialog.show(linkContent);
     }
 
     private void updateUI(){
