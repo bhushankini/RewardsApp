@@ -4,21 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5E7E9">
-
-    <Button
-        android:id="@+id/btnRetry"
-        android:text="@string/retry"
-        android:layout_centerInParent="true"
-        android:background="@drawable/button_background"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Internet"
-        android:textSize="30sp"
-        android:layout_above="@+id/btnRetry"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/no_wifi"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Internet"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/btnRetry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="@string/retry"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
 </RelativeLayout>

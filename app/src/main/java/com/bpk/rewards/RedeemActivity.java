@@ -11,11 +11,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class RedeemActivity extends BaseActivity {
     private LinearLayout llCircle;
     private EditText etRecipient;
     private ImageView imgBigIcon;
+    private Spinner spinnerCircle;
 
     private DatabaseReference mFirebaseRedeemDatabase;
     private DatabaseReference mFirebaseUserDatabase;
@@ -58,6 +61,7 @@ public class RedeemActivity extends BaseActivity {
     private RelativeLayout rlCard;
     private Rewards rewards;
     private int pointsDiff = 1;
+    String circle = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class RedeemActivity extends BaseActivity {
         llCircle = (LinearLayout) findViewById(R.id.llCircle);
         etRecipient = (EditText) findViewById(R.id.etRecipient);
         imgBigIcon = (ImageView) findViewById(R.id.imgBigIcon);
+        spinnerCircle = (Spinner) findViewById(R.id.spinnerCircle);
 
 
         rewards = (Rewards) getIntent().getSerializableExtra(Rewards.REWARD_EXTRAS);
@@ -83,7 +88,6 @@ public class RedeemActivity extends BaseActivity {
             llCircle.setVisibility(View.VISIBLE);
             etRecipient.setHint("Enter Mobile Number");
             etRecipient.setInputType(InputType.TYPE_CLASS_PHONE);
-
             int maxLength = 10;
             etRecipient.setFilters(new InputFilter[] {
                     new InputFilter.LengthFilter(maxLength)
@@ -142,8 +146,9 @@ public class RedeemActivity extends BaseActivity {
                                 mFirebaseTransactionDatabase.child(userId).push().setValue(ut.toMap());
 
                                 Redeem redeem = new Redeem();
+                                redeem.setBrand(rewards.getBrand());
                                 redeem.setValue(rewards.getValue());
-                                redeem.setDisplay(rewards.getDisplay());
+                                redeem.setDisplay(rewards.getDisplay()+" "+circle);
                                 redeem.setRecipient(etRecipient.getText().toString().trim());
                                 mFirebaseRedeemDatabase.child(userId).push().setValue(redeem.toMap());
                                 Toast.makeText(RedeemActivity.this, "Your request is submitted", Toast.LENGTH_LONG).show();
@@ -165,6 +170,21 @@ public class RedeemActivity extends BaseActivity {
 
                     }
                 });
+            }
+        });
+
+        spinnerCircle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int pos, long id) {
+                circle = parent.getItemAtPosition(pos).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
             }
         });
 

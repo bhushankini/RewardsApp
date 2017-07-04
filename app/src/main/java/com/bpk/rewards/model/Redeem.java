@@ -15,6 +15,7 @@ public class Redeem {
     String recipient;
     String display;
     String details;
+    String brand;
 
     public int getValue() {
         return value;
@@ -48,9 +49,18 @@ public class Redeem {
         this.details = details;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("brand", brand);
         result.put("display", display);
         result.put("value", value);
         result.put("recipient",recipient);

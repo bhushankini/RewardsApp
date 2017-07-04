@@ -46,5 +46,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_below="@+id/appBarLayout" />
+    <include layout="@layout/layout_noconnection"/>
 </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

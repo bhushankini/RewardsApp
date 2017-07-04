@@ -47,9 +47,6 @@ public class AccountFragment extends Fragment {
 
     private Button btnLogout;
     private Button btnShare;
-    private Button btnRetry;
-    private RelativeLayout rlMain;
-    private RelativeLayout rlNoConnection;
     private RelativeLayout rlEmailVerification;
     private CircularImageView imgProfile;
     private TextView txtUserName;
@@ -71,8 +68,6 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rlMain = (RelativeLayout) view.findViewById(R.id.rl_main);
-        rlNoConnection = (RelativeLayout) view.findViewById(R.id.rl_noconnection);
         btnLogout = (Button)view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,14 +107,6 @@ public class AccountFragment extends Fragment {
             }
         });
 
-
-        btnRetry = (Button) view.findViewById(R.id.btnRetry);
-        btnRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkConnection();
-            }
-        });
         imgProfile = (CircularImageView) view.findViewById(R.id.img_profile);
         txtUserName = (TextView) view.findViewById(R.id.txtUserName);
         txtUserEmail= (TextView) view.findViewById(R.id.txtUserEmail);
@@ -139,7 +126,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkConnection();
+
     }
 
 
@@ -211,14 +198,4 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    private void checkConnection(){
-        if(Utils.isNetworkAvailable(getActivity())){
-            rlMain.setVisibility(View.VISIBLE);
-            rlNoConnection.setVisibility(View.GONE);
-        } else {
-            rlMain.setVisibility(View.GONE);
-            rlNoConnection.setVisibility(View.VISIBLE);
-
-        }
-    }
 }
