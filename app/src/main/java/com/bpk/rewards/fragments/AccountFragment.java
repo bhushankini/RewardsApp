@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bpk.rewards.LoginActivity;
+import com.bpk.rewards.MyRewardsActivity;
 import com.bpk.rewards.R;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
@@ -47,6 +48,7 @@ public class AccountFragment extends Fragment {
 
     private Button btnLogout;
     private Button btnShare;
+    private Button btnMyRewards;
     private RelativeLayout rlEmailVerification;
     private CircularImageView imgProfile;
     private TextView txtUserName;
@@ -104,6 +106,14 @@ public class AccountFragment extends Fragment {
 
                 */
 
+            }
+        });
+
+        btnMyRewards = (Button) view.findViewById(R.id.btnMyRewards);
+        btnMyRewards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),MyRewardsActivity.class));
             }
         });
 

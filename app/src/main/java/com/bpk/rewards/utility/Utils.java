@@ -21,6 +21,12 @@ public class Utils {
         return dateFormatter.format(utcTime);
     }
 
+    public static String localDate(long utcTime) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy"); //this format changeable
+        dateFormatter.setTimeZone(TimeZone.getDefault());
+        return dateFormatter.format(utcTime);
+    }
+
     public static long getCurrentDateTime() {
         return new Date().getTime();
     }

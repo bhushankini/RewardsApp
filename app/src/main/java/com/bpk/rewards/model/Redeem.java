@@ -11,11 +11,14 @@ import java.util.Map;
  */
 
 public class Redeem {
-    int value;
-    String recipient;
-    String display;
-    String details;
-    String brand;
+    private int value;
+    private String recipient;
+    private String display;
+    private String details;
+    private String brand;
+    private int status;
+    private long timestamp;
+    private long processDate;
 
     public int getValue() {
         return value;
@@ -55,6 +58,30 @@ public class Redeem {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public long getProcessDate() {
+        return processDate;
+    }
+
+    public void setProcessDate(long processDate) {
+        this.processDate = processDate;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     @Exclude

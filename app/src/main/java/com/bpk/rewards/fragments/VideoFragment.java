@@ -122,7 +122,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                 boolean dailyReward = Utils.isNewDate(lastDailyReward,serverTime);
 
                 if(dailyReward){
-                    Toast.makeText(getActivity(),"Claim Reward ",Toast.LENGTH_LONG).show();
                     rewardsPoints(15,"Daily", "Reward");
                     PrefUtils.saveToPrefs(getActivity(), Constants.LAST_DAILY_REWARD, serverTime);
 
@@ -149,18 +148,16 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
 
 
                 } else {
-                    Toast.makeText(getActivity(),"Already Claimed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),getString(R.string.already_claimed),Toast.LENGTH_LONG).show();
 
                 }
 
                 break;
             case  R.id.btnAdmob:
-                Toast.makeText(getActivity(),"Admob ",Toast.LENGTH_LONG).show();
                 showRewardedVideo();
 
                 break;
             case R.id.btnAppLovin:
-                Toast.makeText(getActivity(),"App Lovin ",Toast.LENGTH_LONG).show();
 
                 if (myIncent.isAdReadyToDisplay()) {
                     //
@@ -276,7 +273,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                      */
                     myIncent.show(getActivity() ,adRewardListener, adVideoPlaybackListener, adDisplayListener, adClickListener);
                 } else {
-                    Toast.makeText(getActivity(),"Video is not ready",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),getString(R.string.video_not_ready),Toast.LENGTH_LONG).show();
                 }
 
 
@@ -285,7 +282,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                 if(vunglePub.isAdPlayable()) {
                     vunglePub.playAd();
                 } else {
-                    Toast.makeText(getActivity(),"Video is not ready",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),getString(R.string.video_not_ready),Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -358,6 +355,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         btnAdmob.setEnabled(false);
         if (mRewardedVideoAd.isLoaded()) {
             mRewardedVideoAd.show();
+        } else {
+            Toast.makeText(getActivity(),getString(R.string.video_not_ready),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -434,7 +433,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
         new SweetAlertDialog(getActivity(), SweetAlertDialog.BUTTON_POSITIVE)
                 .setTitleText("Congratulations!!!")
                 .setCustomImage(R.mipmap.ic_launcher)
-                .setContentText("Congratulations you got "+points)
+                .setContentText("Congratulations you got "+points+ " points")
                 .show();
     }
 

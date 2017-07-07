@@ -34,6 +34,7 @@
         <activity android:name=".LoginActivity"/>
         <activity android:name=".SignupActivity"/>
         <activity android:name=".ForgotPasswordActivity"/>
+        <activity android:name=".MyRewardsActivity"/>
         <activity android:name=".RedeemActivity"
             android:windowSoftInputMode="stateHidden"/>
         <activity

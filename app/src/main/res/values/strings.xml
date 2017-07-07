@@ -23,6 +23,7 @@
     <string name="redeem">Redeem</string>
     <string name="points">points</string>
     <string name="cancel">Cancel</string>
+    <string name="myrewards">  My Rewards  </string>
     <string name="claim_daily_reward">Claim your daily reward 15 points</string>
     <string name="retry">Retry</string>
     <string name="email_not_verified">Your email is not verified !</string>
@@ -30,6 +31,14 @@
     <string name="email_sent">Email sent to %s</string>
     <string name="send_verification_mail">Send verification email</string>
     <string name="recipient">Gift to\n%s</string>
+    <string name="status">Status : %1$s %2$s</string>
+    <string name="redeem_date">Redeem Date : %s</string>
+    <string name="to_recipient">To : %s</string>
+    <string name="already_claimed">Already claimed. Check back tomorrow</string>
+    <string name="video_not_ready">Video not ready</string>
+
+    <string name="pending">Pending</string>
+    <string name="completed">Completed On</string>
     <string name="amazon_giftcard">Amazon Gift Card</string>
     <string name="paytm_giftcard">Paytm Gift Card</string>
     <string name="vodafone_recharge">Vodafone Recharge</string>
@@ -46,7 +55,7 @@
 
     <string name="disclaimer_mobile">**Important**\nProvide valid prepaid mobile number and circle for redeeming the mobile recharge.\n
         \n*All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only.</string>
-    <string name="disclaimer_giftcard">**Important**\nProvide valid email for redeeming the gift rard.\n
+    <string name="disclaimer_giftcard">**Important**\nProvide valid email for redeeming the gift card.\n
         \n*All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only.</string>
 
     <array name="mobile_circle">

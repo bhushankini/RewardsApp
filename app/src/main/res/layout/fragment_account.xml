@@ -77,25 +77,34 @@
                 android:text="@string/send_verification_mail"
                 android:textColor="@color/com_facebook_blue"/>
         </RelativeLayout>
+        <Button
+            android:id="@+id/btnMyRewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_email_verification"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_background"
+            android:drawableLeft="@drawable/gift"
+            android:text="@string/myrewards"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_background"
-            android:textColor="@color/white"
-
             android:layout_alignParentBottom="true"
-            android:text="@string/sign_out" />
+            android:background="@drawable/button_background"
+            android:text="@string/sign_out"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnShare"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnLogout"
             android:layout_centerHorizontal="true"
-            android:text="@string/share" />
+            android:text="@string/share"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </RelativeLayout>
