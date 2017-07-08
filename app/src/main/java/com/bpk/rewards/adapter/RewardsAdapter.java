@@ -2,11 +2,13 @@ package com.bpk.rewards.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bpk.rewards.R;
@@ -41,13 +43,14 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         TextView txtValue = holder.txtValue;
 
         ImageView imgReward = holder.imgReward;
+        CardView cardView = holder.cardView;
 
         txtDisplay.setText(dataSet.get(listPosition).getDisplay());
         txtValue.setText(""+dataSet.get(listPosition).getValue());
         String url = Rewards.IMAGES_BASE_URL+dataSet.get(listPosition).getBrand().toLowerCase()+"_small.png";
 
         Picasso.with(context).load(url).into(imgReward);
-        txtValue.setOnClickListener(new View.OnClickListener() {
+        cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, RedeemActivity.class);
@@ -68,12 +71,15 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         private TextView txtDisplay;
         private TextView txtValue;
         private ImageView imgReward;
+        private CardView cardView;
 
         public RewardsViewHolder(View itemView) {
             super(itemView);
             this.txtDisplay = (TextView) itemView.findViewById(R.id.tv_display);
             this.txtValue =(TextView) itemView.findViewById(R.id.tv_value);
             this.imgReward = (ImageView) itemView.findViewById(R.id.imgReward);
+            this.cardView = (CardView) itemView.findViewById(R.id.card_view);
+
         }
     }
 

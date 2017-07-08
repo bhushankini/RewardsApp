@@ -56,7 +56,7 @@
                     android:id="@+id/tv_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+
                     android:gravity="center"
                     android:text="9500"
                     android:textSize="14sp"
@@ -68,6 +68,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="@string/points"
+                    android:visibility="gone"
                     android:textSize="12sp"
 
                     android:textStyle="bold" />

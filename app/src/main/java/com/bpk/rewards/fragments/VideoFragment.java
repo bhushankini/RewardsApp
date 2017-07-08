@@ -1,5 +1,6 @@
 package com.bpk.rewards.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.applovin.sdk.AppLovinAdRewardListener;
 import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.bpk.rewards.R;
+import com.bpk.rewards.games.dice.DiceActivity;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
@@ -48,6 +50,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     private Button btnAppLovin;
     private Button btnAdmob;
     private Button btnVungle;
+    private Button btnDice;
     private RewardedVideoAd mRewardedVideoAd;
     private DatabaseReference mFirebaseUserDatabase;
     private DatabaseReference mFirebaseTransactionDatabase;
@@ -104,6 +107,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
 
         btnVungle = (Button) view.findViewById(R.id.btnVungle);
         btnVungle.setOnClickListener(this);
+        btnDice = (Button) view.findViewById(R.id.btnDice);
+        btnDice.setOnClickListener(this);
         MobileAds.initialize(getActivity(), Constants.ADMOB_APP_ID);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -120,7 +125,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                 long serverTime = PrefUtils.getFromPrefs(getActivity(), Constants.SERVER_TIME, (long) 0.0);
                 long lastDailyReward = PrefUtils.getFromPrefs(getActivity(), Constants.LAST_DAILY_REWARD, (long) 0.0);
                 boolean dailyReward = Utils.isNewDate(lastDailyReward,serverTime);
-
                 if(dailyReward){
                     rewardsPoints(15,"Daily", "Reward");
                     PrefUtils.saveToPrefs(getActivity(), Constants.LAST_DAILY_REWARD, serverTime);
@@ -284,6 +288,10 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                 } else {
                     Toast.makeText(getActivity(),getString(R.string.video_not_ready),Toast.LENGTH_LONG).show();
                 }
+                break;
+
+            case  R.id.btnDice:
+                startActivity(new Intent(getActivity(), DiceActivity.class));
                 break;
             default:
         }

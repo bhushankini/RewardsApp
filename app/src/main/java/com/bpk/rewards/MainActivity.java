@@ -1,7 +1,6 @@
 package com.bpk.rewards;
 
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,12 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bpk.rewards.fragments.AccountFragment;
 import com.bpk.rewards.fragments.HistoryFragment;
 import com.bpk.rewards.fragments.LeaderBoardFragment;
 import com.bpk.rewards.fragments.RewardsFragment;
 import com.bpk.rewards.fragments.VideoFragment;
+import com.bpk.rewards.model.Statistics;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.utility.Constants;
 import com.bpk.rewards.utility.PrefUtils;
@@ -29,18 +28,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "Rewards" ;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TextView txtPoints;
     private DatabaseReference mFirebaseUserDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    private DatabaseReference mFirebaseStatisticsDatabase;
     private Button btnRetry;
     private RelativeLayout rlNoConnection;
 
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        //   getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -69,11 +68,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         txtPoints = (TextView) findViewById(R.id.toolbar_points);
-        //  txtPoints.setText("100 points");
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseUserDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
+        mFirebaseStatisticsDatabase = mFirebaseInstance.getReference(Statistics.FIREBASE_STATISTICS_ROOT);
         addPointsChangeListener();
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -131,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
                 boolean isNewDay = Utils.isNewDate(user.getLastopen(),PrefUtils.getFromPrefs(MainActivity.this,Constants.SERVER_TIME,user.getLastopen()));
 
                 Log.e("KHUSHI", "KHUSHI is new Day " + isNewDay);
+                if(isNewDay){
+                    initNewDay();
+                }
 
            //     PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_ID, user.getUserId());
                 txtPoints.setText(" " + user.getPoints() + "  ");
@@ -180,5 +181,19 @@ public class MainActivity extends AppCompatActivity {
         checkConnection();
     }
 
+    private void initNewDay(){
+        final String userId = PrefUtils.getFromPrefs(this, Constants.USER_ID, "unknownuser");
+        mFirebaseStatisticsDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    mFirebaseStatisticsDatabase.child(userId).child("dice").setValue(0);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

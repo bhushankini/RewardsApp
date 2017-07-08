@@ -18,13 +18,15 @@
     <string name="share">Share</string>
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="watch_earn">Watch video to earn 2 coins</string>
+    <string name="roll_dice_earn">Roll dice to earn coins</string>
     <string name="watch"> Watch</string>
     <string name="claim"> Claim</string>
     <string name="redeem">Redeem</string>
-    <string name="points">points</string>
+    <string name="roll">Roll</string>
+    <string name="points">coins</string>
     <string name="cancel">Cancel</string>
     <string name="myrewards">  My Rewards  </string>
-    <string name="claim_daily_reward">Claim your daily reward 15 points</string>
+    <string name="claim_daily_reward">Claim your daily reward 15 coins</string>
     <string name="retry">Retry</string>
     <string name="email_not_verified">Your email is not verified !</string>
     <string name="email_not_registered">%s is not registered !</string>
