@@ -44,7 +44,7 @@ public class PrefUtils {
      * @param key Key of value to save against
      * @param value Value to save
      */
-    public static void saveToPrefs(Context context, String key, int value) {
+    public static void saveIntToPrefs(Context context, String key, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(key,value);
@@ -66,7 +66,7 @@ public class PrefUtils {
      * @param defaultValue Value to return if no data found against given key
      * @return Return the value found against given key, default if not found or any error occurs
      */
-    public static int getFromPrefs(Context context, String key, int defaultValue) {
+    public static int getIntFromPrefs(Context context, String key, int defaultValue) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         try {
             return sharedPrefs.getInt(key, defaultValue);

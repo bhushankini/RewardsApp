@@ -44,20 +44,21 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
 
         ImageView imgReward = holder.imgReward;
         CardView cardView = holder.cardView;
+        if(dataSet != null) {
+            txtDisplay.setText(dataSet.get(listPosition).getDisplay());
+            txtValue.setText("" + dataSet.get(listPosition).getValue());
+            String url = Rewards.IMAGES_BASE_URL + dataSet.get(listPosition).getBrand().toLowerCase() + "_small.png";
 
-        txtDisplay.setText(dataSet.get(listPosition).getDisplay());
-        txtValue.setText(""+dataSet.get(listPosition).getValue());
-        String url = Rewards.IMAGES_BASE_URL+dataSet.get(listPosition).getBrand().toLowerCase()+"_small.png";
-
-        Picasso.with(context).load(url).into(imgReward);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, RedeemActivity.class);
-                intent.putExtra(Rewards.REWARD_EXTRAS, dataSet.get(listPosition));
-                context.startActivity(intent);
-            }
-        });
+            Picasso.with(context).load(url).into(imgReward);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, RedeemActivity.class);
+                    intent.putExtra(Rewards.REWARD_EXTRAS, dataSet.get(listPosition));
+                    context.startActivity(intent);
+                }
+            });
+        }
 
     }
 

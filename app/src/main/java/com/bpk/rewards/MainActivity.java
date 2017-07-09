@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseUserDatabase = mFirebaseInstance.getReference(User.FIREBASE_USER_ROOT);
         mFirebaseStatisticsDatabase = mFirebaseInstance.getReference(Statistics.FIREBASE_STATISTICS_ROOT);
         addPointsChangeListener();
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -129,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean isNewDay = Utils.isNewDate(user.getLastopen(),PrefUtils.getFromPrefs(MainActivity.this,Constants.SERVER_TIME,user.getLastopen()));
 
                 Log.e("KHUSHI", "KHUSHI is new Day " + isNewDay);
-                if(isNewDay){
-                    initNewDay();
-                }
+                initStatistics(isNewDay);
 
            //     PrefUtils.saveToPrefs(MainActivity.this, Constants.USER_ID, user.getUserId());
                 txtPoints.setText(" " + user.getPoints() + "  ");
@@ -145,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -181,12 +182,30 @@ public class MainActivity extends AppCompatActivity {
         checkConnection();
     }
 
-    private void initNewDay(){
+    private void initStatistics(boolean isNewDay){
         final String userId = PrefUtils.getFromPrefs(this, Constants.USER_ID, "unknownuser");
+        if (isNewDay){
+
+            PrefUtils.saveIntToPrefs(this, Constants.DICE_COUNT,0);
+            PrefUtils.saveIntToPrefs(this, Constants.TTT_COUNT,0);
+            mFirebaseStatisticsDatabase.child(userId).child("dice").setValue(0);
+            mFirebaseStatisticsDatabase.child(userId).child("tictactoe").setValue(0);
+            return;
+        }
+
         mFirebaseStatisticsDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    mFirebaseStatisticsDatabase.child(userId).child("dice").setValue(0);
+                Log.e(TAG,"DDDDDDDD stats "+dataSnapshot.getValue());
+                Statistics stats = dataSnapshot.getValue(Statistics.class);
+                if(stats == null){
+                    Log.e(TAG,"DDDDDDDD stats null");
+                } else {
+                    PrefUtils.saveIntToPrefs(MainActivity.this, Constants.DICE_COUNT,stats.getDice());
+                    PrefUtils.saveIntToPrefs(MainActivity.this, Constants.TTT_COUNT,stats.getTictactoe());
+                }
+
+
             }
 
             @Override

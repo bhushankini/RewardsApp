@@ -67,6 +67,12 @@ public class DiceActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Roll Dice");
         }
 
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PrefUtils.saveIntToPrefs(DiceActivity.this,Constants.DICE_COUNT,0);
+            }
+        });
         rollDices.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -141,27 +147,40 @@ public class DiceActivity extends AppCompatActivity {
     }
 
     private void gameCount(final int points, final boolean updateCount){
+        final int localCount = PrefUtils.getIntFromPrefs(this,Constants.DICE_COUNT,0);
+        txtMessage.setText("You have "+(3 - localCount)+" dice rolls");
+        if(localCount>2) {
+            txtMessage.setText("You already rolled 3 times today. Come back tomorrow");
+            rollDices.setEnabled(false);
+            return;
+        }
 
+        Log.d("TAG","KKKKK Local Count "+localCount);
             final String userId = PrefUtils.getFromPrefs(this, Constants.USER_ID, "unknownuser");
-        mFirebaseStatsticsDatabase.child(userId).child("dice").addListenerForSingleValueEvent(new ValueEventListener() {
+            mFirebaseStatsticsDatabase.child(userId).child(Statistics.FIREBASE_STATISTICS_CHILD_DICE).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() != null) {
                         long totalPoints = (long) dataSnapshot.getValue();
                         Log.d("TAG","KKKKK totla "+totalPoints);
                         gameCount = (int) totalPoints;
-                        if(gameCount >=2) {
+                        if(gameCount >2 || localCount > 2) {
                             txtMessage.setText("You already rolled 3 times today. Come back tomorrow");
                             rollDices.setEnabled(false);
                         } else {
-                            txtMessage.setText("You have "+(3 - gameCount)+" dice rolls");
                             rollDices.setEnabled(true);
                         }
                         if(updateCount) {
-                            mFirebaseStatsticsDatabase.child(userId).child("dice").setValue(gameCount+1);
+                            mFirebaseStatsticsDatabase.child(userId).child(Statistics.FIREBASE_STATISTICS_CHILD_DICE).setValue(gameCount+1);
+                            PrefUtils.saveIntToPrefs(DiceActivity.this,Constants.DICE_COUNT, localCount +1);
                             Log.d("TAG","KKKKK update db "+gameCount);
+                            txtMessage.setText("You have "+(3 - localCount - 1)+" dice rolls");
 
                             rewardsPoints(points, "Roll Dice", "Game");
+                            if(localCount+1 >2){
+                                txtMessage.setText("You already rolled 3 times today. Come back tomorrow");
+                                rollDices.setEnabled(false);
+                            }
                         }
                     }
                 }

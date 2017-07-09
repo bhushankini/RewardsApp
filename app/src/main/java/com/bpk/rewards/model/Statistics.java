@@ -1,14 +1,32 @@
 package com.bpk.rewards.model;
 
 public class Statistics {
-    private int diceCount;
+    private int dice;
+    private int tictactoe;
     public static final String FIREBASE_STATISTICS_ROOT = "statistics";
+    public static final String FIREBASE_STATISTICS_CHILD_DICE = "dice";
+    public static final String FIREBASE_STATISTICS_CHILD_TICTACTOE = "tictactoe";
 
-    public int getDiceCount() {
-        return diceCount;
+    public Statistics(int dice, int tictactoe){
+        this.dice = dice;
+        this.tictactoe = tictactoe;
+
+    }
+    public Statistics(){}
+
+    public int getDice() {
+        return dice;
     }
 
-    public void setDiceCount(int diceCount) {
-        this.diceCount = diceCount;
+    public int getTictactoe() {
+        return tictactoe;
+    }
+
+    public void setDice(int dice) {
+        this.dice = dice;
+    }
+
+    public void setTictactoe(int tictactoe) {
+        this.tictactoe = tictactoe;
     }
 }

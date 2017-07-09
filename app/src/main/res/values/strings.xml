@@ -19,8 +19,10 @@
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="watch_earn">Watch video to earn 2 coins</string>
     <string name="roll_dice_earn">Roll dice to earn coins</string>
+    <string name="tictactoe_earn">Play &amp; Win 10 coins</string>
     <string name="watch"> Watch</string>
     <string name="claim"> Claim</string>
+    <string name="play"> Play</string>
     <string name="redeem">Redeem</string>
     <string name="roll">Roll</string>
     <string name="points">coins</string>
@@ -54,6 +56,9 @@
     <string name="email_hint">Enter Email</string>
     <string name="no_network">No Network. Check you internet</string>
 
+    <!--TIC-TAC-TOE -->
+    <string name="tic_tac_toe">Tic Tac Toe</string>
+    <string name="played_three_times">You already played 3 times today. Come back tomorrow</string>
 
     <string name="disclaimer_mobile">**Important**\nProvide valid prepaid mobile number and circle for redeeming the mobile recharge.\n
         \n*All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only.</string>

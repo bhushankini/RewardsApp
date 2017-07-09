@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.applovin.adview.AppLovinIncentivizedInterstitial;
 import com.applovin.sdk.AppLovinAd;
 import com.applovin.sdk.AppLovinAdClickListener;
@@ -20,6 +20,7 @@ import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.bpk.rewards.R;
 import com.bpk.rewards.games.dice.DiceActivity;
+import com.bpk.rewards.games.tictactoe.TicTacToeActivity;
 import com.bpk.rewards.model.User;
 import com.bpk.rewards.model.UserTransaction;
 import com.bpk.rewards.utility.Constants;
@@ -38,9 +39,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.vungle.publisher.EventListener;
 import com.vungle.publisher.VunglePub;
-
 import java.util.Map;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class VideoFragment extends Fragment implements View.OnClickListener ,RewardedVideoAdListener {
@@ -50,7 +49,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
     private Button btnAppLovin;
     private Button btnAdmob;
     private Button btnVungle;
-    private Button btnDice;
+    RelativeLayout rlDice;
+    RelativeLayout rlTicTacToe;
     private RewardedVideoAd mRewardedVideoAd;
     private DatabaseReference mFirebaseUserDatabase;
     private DatabaseReference mFirebaseTransactionDatabase;
@@ -107,8 +107,10 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
 
         btnVungle = (Button) view.findViewById(R.id.btnVungle);
         btnVungle.setOnClickListener(this);
-        btnDice = (Button) view.findViewById(R.id.btnDice);
-        btnDice.setOnClickListener(this);
+        rlDice = (RelativeLayout) view.findViewById(R.id.rl_dice);
+        rlDice.setOnClickListener(this);
+        rlTicTacToe = (RelativeLayout) view.findViewById(R.id.rl_tictactoe);
+        rlTicTacToe.setOnClickListener(this);
         MobileAds.initialize(getActivity(), Constants.ADMOB_APP_ID);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -290,8 +292,12 @@ public class VideoFragment extends Fragment implements View.OnClickListener ,Rew
                 }
                 break;
 
-            case  R.id.btnDice:
+            case  R.id.rl_dice:
                 startActivity(new Intent(getActivity(), DiceActivity.class));
+                break;
+
+            case  R.id.rl_tictactoe:
+                startActivity(new Intent(getActivity(), TicTacToeActivity.class));
                 break;
             default:
         }

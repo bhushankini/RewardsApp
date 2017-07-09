@@ -17,6 +17,8 @@ public class Constants {
     public static final String SERVER_TIME = "server_time";
     public static final String LAST_DAILY_REWARD = "last_daily_reward";
     public static final String USER_NAME = "user_name";
+    public static final String DICE_COUNT = "dice_count";
+    public static final String TTT_COUNT = "ttt_count";
 
     public static final int REFERAL_POINTS = 50;
 
