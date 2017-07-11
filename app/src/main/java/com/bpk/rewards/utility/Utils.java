@@ -3,12 +3,19 @@ package com.bpk.rewards.utility;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import com.bpk.rewards.R;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -55,19 +62,26 @@ public class Utils {
         return PrefUtils.getFromPrefs(context, Constants.USER_ID, "GUEST");
     }
 
+    public static String getCountryCode(Context context){
+        String countryCode = "";
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if(tm != null ) {
+            countryCode = tm.getNetworkCountryIso();
+            if (countryCode.length() > 0) {
+                return countryCode.toUpperCase();
+            }
+        }
+        countryCode = Locale.getDefault().getCountry();
+        if(countryCode.length() > 0){
+            return  countryCode.toUpperCase();
+        }
+        return countryCode;
+    }
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    public static void showRewardsDialog(Context context, int points){
-        new SweetAlertDialog(context, SweetAlertDialog.BUTTON_POSITIVE)
-                .setTitleText("Congratulations!!!")
-                .setCustomImage(R.mipmap.ic_launcher)
-                .setContentText("Congratulations you got "+points+ " points")
-                .show();
     }
 }

@@ -15,17 +15,17 @@ public class InstallReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         Bundle extras = intent.getExtras();
         String referrerString = null;
-        try {
+     /*   try {
             if (extras != null) {
-                referrerString = extras.getString("referrer");
+                referrerString = extras.getString(Intent.EXTRA_REFERRER);
                 Log.e("InstallReceiver", "HHHHH referer string "+referrerString);
                 PrefUtils.saveToPrefs(context, Constants.REFERRER_ID, referrerString);
             }
         }catch (Exception e){
             Log.e("InstallReceiver", "Error "+e);
         }
-
-       /* if(action != null && action.equals("com.android.vending.INSTALL_REFERRER")){
+*/
+        if(action != null && action.equals("com.android.vending.INSTALL_REFERRER")){
             try {
                 final String referrer = intent.getStringExtra("referrer");
                 Log.e("InstallReceiver", "referrer == "+referrer);
@@ -33,7 +33,7 @@ public class InstallReceiver extends BroadcastReceiver {
             } catch (Exception e) {
                 Log.e("InstallReceiver", "Error "+e);
             }
-        }*/
+        }
     }
 }
 //am broadcast -a com.android.vending.INSTALL_REFERRER -n com.bpk.rewards/.InstallReceiver --es "referrer" "Rjtg8Wgf1xOinpD1wiQL9ZxvPN62"

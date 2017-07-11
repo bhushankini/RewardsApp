@@ -24,12 +24,17 @@ import okhttp3.Response;
  */
 
 public class SplashActivity extends Activity implements ServerTimeAsyncResponse {
-
+    private String country;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        country = PrefUtils.getFromPrefs(this, Constants.USER_COUNTRY,"");
+        if(country.length()==0){
+            country = Utils.getCountryCode(this);
+            PrefUtils.saveToPrefs(this,Constants.USER_COUNTRY,country);
+        }
         mAuth = FirebaseAuth.getInstance();
         if(Utils.isNetworkAvailable(this)) {
             new Handler().postDelayed(new Runnable() {
@@ -59,10 +64,13 @@ public class SplashActivity extends Activity implements ServerTimeAsyncResponse 
 
     @Override
     public void processFinish(String result) {
-        Log.e("KHUSHI", "KHUSHI process finish "+Long.parseLong(result));
-        PrefUtils.saveToPrefs(this, Constants.SERVER_TIME,Long.parseLong(result));
-
-        gotoMain();
+        try {
+            Log.e("KHUSHI", "KHUSHI process finish " + Long.parseLong(result));
+            PrefUtils.saveToPrefs(this, Constants.SERVER_TIME, Long.parseLong(result));
+            gotoMain();
+        } catch (Exception e){
+            Toast.makeText(this,"Server Error. Try Again",Toast.LENGTH_LONG).show();
+        }
     }
 }
 

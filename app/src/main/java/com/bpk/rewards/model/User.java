@@ -12,8 +12,9 @@ public class User {
     private String email;
     private String photoUrl;
     private String referalId;
-    public static final String FIREBASE_USER_ROOT = "users";
 
+    public static final String FIREBASE_USER_ROOT = "users";
+    private String country;
     // Default constructor required for calls to
     // DataSnapshot.getValue(User.class)
     public User() {
@@ -82,5 +83,13 @@ public class User {
 
     public String getReferalId() {
         return referalId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

@@ -42,17 +42,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private static final String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
-
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private DatabaseReference mRefererFirebaseDatabase;
     private DatabaseReference mFirebaseTransactionDatabase;
-
     private CallbackManager mCallbackManager;
-
     private EditText mEmailField;
     private EditText mPasswordField;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -218,6 +214,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             u.setName(user.getDisplayName());
             if(user.getPhotoUrl()!=null)
                 u.setPhotoUrl(user.getPhotoUrl().toString());
+            u.setCountry(PrefUtils.getFromPrefs(this,Constants.USER_COUNTRY,""));
             newUser(u);
             user.getDisplayName();
             Log.d(TAG, "Login SuccessUser  " + user);

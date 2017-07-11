@@ -101,10 +101,12 @@
             android:id="@+id/btnShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnLogout"
+            android:layout_above="@+id/btnLogout"
+            android:background="@drawable/button_background"
             android:layout_centerHorizontal="true"
             android:text="@string/share"
-            android:visibility="gone" />
+            android:textColor="@color/white"
+            android:visibility="visible" />
 
     </RelativeLayout>
 </RelativeLayout>

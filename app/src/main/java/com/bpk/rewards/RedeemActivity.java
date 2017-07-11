@@ -161,7 +161,10 @@ public class RedeemActivity extends BaseActivity {
                                 Redeem redeem = new Redeem();
                                 redeem.setBrand(rewards.getBrand());
                                 redeem.setValue(rewards.getValue());
-                                redeem.setDisplay(rewards.getDisplay()+" "+circle);
+                                if(rewards.getType() == 1)
+                                    redeem.setDisplay(rewards.getDisplay()+" "+circle);
+                                else
+                                    redeem.setDisplay(rewards.getDisplay());
                                 redeem.setRecipient(etRecipient.getText().toString().trim());
                                 mFirebaseRedeemDatabase.child(userId).push().setValue(redeem.toMap());
                                 Toast.makeText(RedeemActivity.this, "Your request is submitted", Toast.LENGTH_LONG).show();

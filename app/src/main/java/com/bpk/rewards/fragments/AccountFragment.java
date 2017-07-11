@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.internal.Util;
 
 /**
  * Created by bkini on 6/18/17.
@@ -102,9 +103,6 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 share();
-                /*
-
-                */
 
             }
         });
@@ -146,8 +144,8 @@ public class AccountFragment extends Fragment {
         shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT,"My Rewards app");
-        shareIntent.putExtra(Intent.EXTRA_REFERRER,"new referer");
-        shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey get mobile recharge and gift cards " + "https://play.google.com/store/apps/details?id=com.bpk.rewards");
+        shareIntent.putExtra("referrer", Utils.getUserId(getActivity()));
+        shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey get mobile recharge and gift cards " + "https://play.google.com/store/apps/details?id=com.bpk.rewards&referrer="+ Utils.getUserId(getActivity()));
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent,"Share with"));
 

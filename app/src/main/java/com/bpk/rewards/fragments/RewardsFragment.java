@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import com.bpk.rewards.R;
 import com.bpk.rewards.adapter.RewardsAdapter;
 import com.bpk.rewards.model.Rewards;
+import com.bpk.rewards.utility.Constants;
+import com.bpk.rewards.utility.PrefUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,8 +46,9 @@ public class RewardsFragment extends Fragment {
     }
 
     private void getRewardsList() {
+        String countryCode = PrefUtils.getFromPrefs(getActivity(), Constants.USER_COUNTRY,"IN");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Rewards.FIREBASE_REWARDS_ROOT);
-        ref.orderByChild("display").addValueEventListener(new ValueEventListener() {
+        ref.orderByChild("country").equalTo(countryCode).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

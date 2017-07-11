@@ -15,6 +15,7 @@ public class Rewards implements Serializable {
     private int type;
     private String bgcolor;
     private String textcolor;
+    private String country;
 
     public static final String FIREBASE_REWARDS_ROOT = "rewards";
     public static final String FIREBASE_REDEEM_ROOT = "redeem";
@@ -94,5 +95,13 @@ public class Rewards implements Serializable {
 
     public void setTextcolor(String textcolor) {
         this.textcolor = textcolor;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
